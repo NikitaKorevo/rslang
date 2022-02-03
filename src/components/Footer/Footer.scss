@@ -1,0 +1,51 @@
+.Footer {
+  background-color: #02a7a7;
+
+  .Footer__content {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 30px);
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 50px;
+    font: normal 400 16px 'Roboto', sans-serif;
+    color: #fff;
+
+    .left-column {
+      display: flex;
+      align-items: center;
+      column-gap: 15px;
+
+      .rss-logo-link {
+        display: flex;
+        align-items: center;
+        transition: 0.3s filter;
+      }
+
+      .rss-logo-img {
+        height: 35px;
+      }
+
+      .rss-logo-link:hover {
+      }
+
+      .year {
+      }
+    }
+
+    .right-column {
+      display: flex;
+      align-items: center;
+      column-gap: 20px;
+
+      .github-link {
+        color: #fff;
+        text-decoration: none;
+        transition: 0.3s color;
+      }
+
+      .github:hover {
+      }
+    }
+  }
+}
