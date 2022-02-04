@@ -1,2 +1,9 @@
 .App {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &-main {
+    min-height: calc(100vh - 50px - 50px);
+  }
 }

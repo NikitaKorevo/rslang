@@ -9,19 +9,25 @@ import DevelopmentTeam from './pages/DevelopmentTeam/DevelopmentTeam';
 import Sprint from './pages/Sprint/Sprint';
 import Statistics from './pages/Statistics/Statistics';
 import Textbook from './pages/Textbook/Textbook';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path={ROUTES.HOME} element={<Home />} />
-        <Route path={ROUTES.AUDIO_CALL} element={<AudioCall />} />
-        <Route path={ROUTES.AUTHORIZATION} element={<Authorization />} />
-        <Route path={ROUTES.DEVELOPMENT_TEAM} element={<DevelopmentTeam />} />
-        <Route path={ROUTES.SPRINT} element={<Sprint />} />
-        <Route path={ROUTES.STATISTICS} element={<Statistics />} />
-        <Route path={ROUTES.TEXTBOOK} element={<Textbook />} />
-      </Routes>
+      <Header />
+      <div className="App-main">
+        <Routes>
+          <Route path={ROUTES.HOME} element={<Home />} />
+          <Route path={ROUTES.AUDIO_CALL} element={<AudioCall />} />
+          <Route path={ROUTES.AUTHORIZATION} element={<Authorization />} />
+          <Route path={ROUTES.DEVELOPMENT_TEAM} element={<DevelopmentTeam />} />
+          <Route path={ROUTES.SPRINT} element={<Sprint />} />
+          <Route path={ROUTES.STATISTICS} element={<Statistics />} />
+          <Route path={ROUTES.TEXTBOOK} element={<Textbook />} />
+        </Routes>
+      </div>
+      <Footer />
     </div>
   );
 }
