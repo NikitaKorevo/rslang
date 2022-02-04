@@ -1,2 +1,15 @@
 .Authorization {
+  min-height: calc(100vh - 50px - 50px);
+  min-width: 100%;
+
+  &-form {
+    padding: 45px;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  }
+
+  .form-btns {
+    display: flex;
+    justify-content: space-around;
+  }
 }

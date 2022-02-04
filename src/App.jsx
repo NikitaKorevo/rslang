@@ -11,6 +11,7 @@ import Statistics from './pages/Statistics/Statistics';
 import Textbook from './pages/Textbook/Textbook';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (

@@ -40,7 +40,7 @@ function Header() {
           </li>
           <li className="nav__item">
             <NavLink className="nav__link" to={ROUTES.AUTHORIZATION}>
-              Авторизация
+              Войти
             </NavLink>
           </li>
         </ul>
