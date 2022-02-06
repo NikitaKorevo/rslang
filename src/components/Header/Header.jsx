@@ -39,7 +39,7 @@ function Header() {
             </NavLink>
           </li>
           <li className="nav__item">
-            <NavLink className="nav__link" to={ROUTES.AUTHORIZATION}>
+            <NavLink className="nav__link" to={ROUTES.SIGN_IN}>
               Войти
             </NavLink>
           </li>

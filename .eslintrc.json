@@ -15,9 +15,8 @@
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module",
-    "defaultSeverity": "warning"
+    "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["react","only-warn"],
   "rules": {}
 }

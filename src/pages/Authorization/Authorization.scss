@@ -1,6 +1,12 @@
 .Authorization {
   min-height: calc(100vh - 50px - 50px);
-  min-width: 100%;
+  &-form {
+    min-width: 400px;
+  }
+
+  .nav-btn {
+    background-color: #02a7a7;
+  }
 
   &-form {
     padding: 45px;
@@ -10,6 +16,28 @@
 
   .form-btns {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+
+    &__top {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+
+      .logIn-btn {
+        margin-right: 20px;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .logIn-btn {
+    margin-right: 10px;
+    border: 0;
+     &__disabled {
+       background-color: grey;
+       opacity: 0.6;
+     }
   }
 }
