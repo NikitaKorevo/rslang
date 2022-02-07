@@ -1,15 +1,38 @@
-import axios from 'axios';
 import { CONSTANTS } from '../constants/constants.js';
 
 class Authorization {
-  static createNewUser(userData) {
-    axios
-      .post(`${CONSTANTS.baseUrl}/${CONSTANTS.users}`, userData)
-      .then((res) => console.log(res.status))
-      .catch((res) => console.log(res.message));
+  static async createUser(userData) {
+    try {
+      const resp = await fetch(`${CONSTANTS.baseUrl}${CONSTANTS.endPoint.users}`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+      return resp.status;
+    } catch (e) {
+      return await e.status;
+    }
+  }
+
+  static async logInUser(userData) {
+    try {
+      const resp = await fetch(`${CONSTANTS.baseUrl}${CONSTANTS.endPoint.signIn}`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+      return resp.json();
+    } catch (e) {
+      return await e.status;
+    }
   }
 }
-
-Authorization.createNewUser({ name: 'Ger', email: 'hm2341@il.ru', password: 'qwer1234T' });
-
 export default Authorization;
+
+console.log(`${CONSTANTS.baseUrl}${CONSTANTS.endPoint.signIn}`);

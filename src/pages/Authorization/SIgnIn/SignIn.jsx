@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import ROUTES from '../../../constants/routes';
 import { LinkContainer } from 'react-router-bootstrap';
 import SignInForm from '../../../components/SignInForm/SignInForm.jsx';
+import avatarIcon from '../../../assets/svg/avatar.svg';
 
 function SignIn() {
   return (
@@ -15,6 +16,10 @@ function SignIn() {
             <Button className="logIn-btn logIn-btn__disabled">Регистрация</Button>
           </LinkContainer>
         </nav>
+        <div className="avatar-wrapper">
+          <img src={avatarIcon} alt="avatar" />
+        </div>
+
         <SignInForm />
       </div>
     </div>

@@ -13,6 +13,7 @@ import Footer from './components/Footer/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SignIn from './pages/Authorization/SIgnIn/SignIn.jsx';
 import SignUp from './pages/Authorization/SignUp/SignUp.jsx';
+import SignUpComplete from './components/SignUpComplete/SignUpComplete.jsx';
 
 function App() {
   return (
@@ -23,6 +24,10 @@ function App() {
           <Route path={ROUTES.HOME} element={<Home />} />
           <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
           <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
+          <Route
+            path={`${ROUTES.SIGN_UP}${ROUTES.SIGN_UP_COMPLETE}`}
+            element={<SignUpComplete />}
+          />
           <Route path={ROUTES.AUDIO_CALL} element={<AudioCall />} />
           <Route path={ROUTES.DEVELOPMENT_TEAM} element={<DevelopmentTeam />} />
           <Route path={ROUTES.SPRINT} element={<Sprint />} />

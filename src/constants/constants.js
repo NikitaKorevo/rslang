@@ -1,4 +1,7 @@
 export const CONSTANTS = {
-  baseUrl: 'https://rslang-react-app.herokuapp.com',
-  users: 'users'
+  baseUrl: 'http://localhost:8080/',
+  endPoint: {
+    users: 'users',
+    signIn: 'signin'
+  }
 };

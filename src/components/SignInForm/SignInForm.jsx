@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
+import './SignInForm.scss';
 
 const SignInForm = () => {
   return (
@@ -14,7 +15,7 @@ const SignInForm = () => {
         <Form.Check type="checkbox" label="Запомнить меня" />
       </Form.Group>
       <div className="form-btns">
-        <Button variant="primary" type="submit" className="logIn-btn submit-btn">
+        <Button type="submit" className="logIn-btn submit-btn">
           Войти
         </Button>
       </div>

@@ -4,6 +4,8 @@ import { Button } from 'react-bootstrap';
 import ROUTES from '../../../constants/routes';
 import { LinkContainer } from 'react-router-bootstrap';
 import SignUpForm from '../../../components/SignUpForm/SignUpForm.jsx';
+import avatarIcon from '../../../assets/svg/register-logo.svg';
+import { useHistory } from 'react-router-dom';
 
 function SignUp() {
   return (
@@ -15,6 +17,9 @@ function SignUp() {
           </LinkContainer>
           <Button className="logIn-btn nav-btn">Регистрация</Button>
         </nav>
+        <div className="avatar-wrapper">
+          <img src={avatarIcon} alt="avatar" />
+        </div>
         <SignUpForm />
       </div>
     </div>
