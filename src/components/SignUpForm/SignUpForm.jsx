@@ -1,40 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import './SignUpForm.scss';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Authorization from '../../API/authorization.js';
-
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .required('Заполните поле')
-    .min(2, 'Имя должно содержать минимум 2 символа')
-    .max(16, 'Превышено макмсимальное количество символов, 16')
-    .matches(/^[a-zA-Z0-9_-]{2,16}$/, 'Имя может содержать только латинские буквы и цифры'),
-
-  email: yup
-    .string()
-    .required('Заполните поле')
-    .matches(/^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i, 'Некорректный email'),
-  password: yup
-    .string()
-    .required('Заполните поле')
-    .min(8, 'Пароль должен содержать минимум 8 символов')
-    .max(16, 'Превышено макмсимальное количество символов, 16')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,16})/,
-      'Пароль должен содержать цифры, латинские буквы верхнего и нижнего регистра'
-    ),
-  confirmPassword: yup
-    .string()
-    .required('Заполните поле')
-    .oneOf([yup.ref('password'), null])
-});
+import SignUpSchema from './Schema/SignUpFormSchema.js';
+import { Context } from '../../index.jsx';
 
 const SignUpForm = () => {
+  const { store } = useContext(Context);
+
   const {
     register,
     formState: { errors },
@@ -42,30 +17,39 @@ const SignUpForm = () => {
     reset
   } = useForm({
     mode: 'onBlur',
-    resolver: yupResolver(schema)
+    resolver: yupResolver(SignUpSchema)
   });
 
   const navigate = useNavigate();
   const emailErrorRef = useRef();
 
-  const [loading, setLoading] = useState(false);
+  const [loadAnimation, setLoadAnimation] = useState(false);
 
-  const onSubmit = async (data) => {
-    setLoading(true);
-    delete data.confirmPassword;
-    const result = await Authorization.createUser(data);
-    delete data.name;
-    if (result === 200) {
-      console.log(data);
-      const logInData = await Authorization.logInUser(data);
-      console.log(logInData);
+  const onSubmit = async (inputData) => {
+    setLoadAnimation(true);
+
+    const signUpData = {
+      name: inputData.name,
+      email: inputData.email,
+      password: inputData.password
+    };
+
+    const signInData = {
+      email: inputData.email,
+      password: inputData.password
+    };
+
+    const createUserResp = await store.signUp(signUpData);
+    console.log(createUserResp);
+
+    if (createUserResp.status === 200) {
+      const signInResp = await store.signIn(signInData);
+      console.log(signInResp);
       navigate('success');
-    } else if (result === 417 || 423) {
+    } else if (createUserResp.status === 417 || 423) {
       emailErrorRef.current.innerText = 'Пользователь с таким email уже зарегистрирован.';
-    } else {
-      alert(`Error ${result}`);
     }
-    setLoading(false);
+    setLoadAnimation(false);
     reset();
   };
 
@@ -96,12 +80,9 @@ const SignUpForm = () => {
         />
         <p>{errors?.confirmPassword?.message && 'Пароль должен совпадать'}</p>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check type="checkbox" label="Запомнить меня" />
-      </Form.Group>
 
       <div className="form-btns">
-        {loading ? (
+        {loadAnimation ? (
           <div className="loading-icon">
             <Spinner animation="border" role="status">
               <span className="visually-hidden">Loading...</span>

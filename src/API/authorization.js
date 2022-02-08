@@ -1,38 +1,13 @@
 import { CONSTANTS } from '../constants/constants.js';
+import $api from './http.js';
 
 class Authorization {
   static async createUser(userData) {
-    try {
-      const resp = await fetch(`${CONSTANTS.baseUrl}${CONSTANTS.endPoint.users}`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-      });
-      return resp.status;
-    } catch (e) {
-      return await e.status;
-    }
+    return $api.post(CONSTANTS.endPoint.users, userData);
   }
 
-  static async logInUser(userData) {
-    try {
-      const resp = await fetch(`${CONSTANTS.baseUrl}${CONSTANTS.endPoint.signIn}`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-      });
-      return resp.json();
-    } catch (e) {
-      return await e.status;
-    }
+  static async signIn(userData) {
+    return $api.post(CONSTANTS.endPoint.signIn, userData);
   }
 }
 export default Authorization;
-
-console.log(`${CONSTANTS.baseUrl}${CONSTANTS.endPoint.signIn}`);

@@ -5,7 +5,6 @@ import ROUTES from '../../../constants/routes';
 import { LinkContainer } from 'react-router-bootstrap';
 import SignUpForm from '../../../components/SignUpForm/SignUpForm.jsx';
 import avatarIcon from '../../../assets/svg/register-logo.svg';
-import { useHistory } from 'react-router-dom';
 
 function SignUp() {
   return (
