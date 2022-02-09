@@ -1,12 +1,12 @@
 import React, { useContext, useRef, useState } from 'react';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import './SignInForm.scss';
-import { Context } from '../../index.jsx';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup.js';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import SignInSchema from './Schema/SignInFormSchema.js';
+import SignInFormSchema from './Schema/SignInFormSchema.js';
+import { Context } from '../../store/store.js';
 
 const SignInForm = observer(() => {
   const { store } = useContext(Context);
@@ -17,7 +17,7 @@ const SignInForm = observer(() => {
     handleSubmit
   } = useForm({
     mode: 'onBlur',
-    resolver: yupResolver(SignInSchema)
+    resolver: yupResolver(SignInFormSchema)
   });
 
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ const SignInForm = observer(() => {
 
   const onSubmit = async (inputData) => {
     setLoadAnimation(true);
+    console.log('CLIKED');
 
     const signInResp = await store.signIn(inputData);
 

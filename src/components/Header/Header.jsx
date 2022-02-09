@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import './Header.scss';
 import { NavLink } from 'react-router-dom';
-import ROUTES from '../../constants/routes';
-import { Context } from '../../index.jsx';
 import { observer } from 'mobx-react-lite';
+import ROUTES from '../../constants/routes';
+import { Context } from '../../store/store.js';
+
 const Header = observer(() => {
   const { store } = useContext(Context);
-
   return (
     <header className="Header">
       <nav className="nav">
@@ -46,9 +46,8 @@ const Header = observer(() => {
               <div
                 className="nav__link sign-out-btn"
                 onClick={() => {
-                  console.log('SignOut');
+                  console.log(JSON.parse(localStorage.getItem('userInfo')).isAuth);
                   store.signOut();
-                  console.log(localStorage.getItem('token'));
                 }}
               >
                 Выйти

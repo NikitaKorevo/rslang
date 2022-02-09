@@ -1,11 +1,12 @@
 import React, { useContext, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import './SignUpForm.scss';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import SignUpSchema from './Schema/SignUpFormSchema.js';
-import { Context } from '../../index.jsx';
+import { Context } from '../../store/store.js';
 
 const SignUpForm = () => {
   const { store } = useContext(Context);
@@ -22,7 +23,6 @@ const SignUpForm = () => {
 
   const navigate = useNavigate();
   const emailErrorRef = useRef();
-
   const [loadAnimation, setLoadAnimation] = useState(false);
 
   const onSubmit = async (inputData) => {

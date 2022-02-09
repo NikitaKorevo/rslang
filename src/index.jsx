@@ -1,14 +1,12 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './scss/normalize.scss';
 import './index.scss';
 import { HashRouter } from 'react-router-dom';
 import App from './App';
-import Store from './store/store.js';
-
-const store = new Store();
-export const Context = createContext({ store });
+import { store } from './store/store.js';
+import { Context } from './store/store.js';
 
 ReactDOM.render(
   <React.StrictMode>
