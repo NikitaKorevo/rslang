@@ -1,0 +1,13 @@
+.AudioCallHeadband {
+  width: calc(100% - 30px);
+  max-width: 800px;
+  padding: 50px;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.151);
+  text-align: center;
+
+  .select {
+    display: inline-block;
+    width: 150px;
+  }
+}
