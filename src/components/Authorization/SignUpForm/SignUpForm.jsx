@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import SignUpSchema from './Schema/SignUpFormSchema.js';
-import { Context } from '../../store/store.js';
+import { Context } from '../../../store/store.js';
 
 const SignUpForm = () => {
   const { store } = useContext(Context);

@@ -1,10 +1,10 @@
 import React from 'react';
 import '../Authorization.scss';
 import { Button } from 'react-bootstrap';
-import ROUTES from '../../../constants/routes';
 import { LinkContainer } from 'react-router-bootstrap';
-import SignInForm from '../../../components/SignInForm/SignInForm.jsx';
+import ROUTES from '../../../constants/routes';
 import avatarIcon from '../../../assets/svg/avatar.svg';
+import SignInForm from '../../../components/Authorization/SignInForm/SignInForm.jsx';
 
 function SignIn() {
   return (

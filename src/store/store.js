@@ -54,6 +54,9 @@ class Store {
     this.setAuth(false);
     localStorage.setItem('userInfo', JSON.stringify(this.guestData));
   }
+
+  currentTextbookPage = 1;
+  textbookGroup = 1;
 }
 
 export const store = new Store();

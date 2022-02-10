@@ -1,8 +1,8 @@
 import React from 'react';
-import signUpIcon from '../../assets/svg/sign-up-success.svg';
 import './signUpComplete.scss';
 import ReactConfetti from 'react-confetti';
 import useWindowSize from 'react-use/lib/useWindowSize.js';
+import signUpIcon from '../../../assets/svg/sign-up-success.svg';
 
 const SignUpComplete = () => {
   const { width, height } = useWindowSize();

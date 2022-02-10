@@ -13,7 +13,7 @@ import Footer from './components/Footer/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SignIn from './pages/Authorization/SIgnIn/SignIn.jsx';
 import SignUp from './pages/Authorization/SignUp/SignUp.jsx';
-import SignUpComplete from './components/SignUpComplete/SignUpComplete.jsx';
+import SignUpComplete from './components/Authorization/SignUpComplete/SignUpComplete.jsx';
 import { Context } from './store/store.js';
 
 function App() {

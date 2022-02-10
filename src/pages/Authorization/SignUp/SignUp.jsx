@@ -1,9 +1,9 @@
 import React from 'react';
 import '../Authorization.scss';
 import { Button } from 'react-bootstrap';
-import ROUTES from '../../../constants/routes';
 import { LinkContainer } from 'react-router-bootstrap';
-import SignUpForm from '../../../components/SignUpForm/SignUpForm.jsx';
+import ROUTES from '../../../constants/routes';
+import SignUpForm from '../../../components/Authorization/SignUpForm/SignUpForm.jsx';
 import avatarIcon from '../../../assets/svg/register-logo.svg';
 
 function SignUp() {
