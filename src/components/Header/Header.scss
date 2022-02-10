@@ -26,10 +26,25 @@
       color: #fff;
       padding: 5px 10px;
       text-decoration: none;
+      cursor: pointer;
     }
 
     .nav__link.active {
       border-bottom: 3px solid #008080;
     }
+
+    .sign-out-btn {
+      margin-left: 10px;
+      display: inline;
+      color: black;
+      background-color: #ff9100;
+      padding: 7px;
+      border-radius: 10px;
+      &:hover {
+        opacity: 0.9;
+      }
+    }
   }
+
+
 }

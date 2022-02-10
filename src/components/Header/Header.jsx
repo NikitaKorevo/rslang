@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Header.scss';
 import { NavLink } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import ROUTES from '../../constants/routes';
+import { Context } from '../../store/store.js';
 
-function Header() {
+const Header = observer(() => {
+  const { store } = useContext(Context);
   return (
     <header className="Header">
       <nav className="nav">
@@ -39,14 +42,26 @@ function Header() {
             </NavLink>
           </li>
           <li className="nav__item">
-            <NavLink className="nav__link" to={ROUTES.AUTHORIZATION}>
-              Авторизация
-            </NavLink>
+            {store.isAuth ? (
+              <div
+                className="nav__link sign-out-btn"
+                onClick={() => {
+                  console.log(JSON.parse(localStorage.getItem('userInfo')).isAuth);
+                  store.signOut();
+                }}
+              >
+                Выйти
+              </div>
+            ) : (
+              <NavLink className="nav__link" to={ROUTES.SIGN_IN}>
+                Войти
+              </NavLink>
+            )}
           </li>
         </ul>
       </nav>
     </header>
   );
-}
+});
 
 export default Header;
