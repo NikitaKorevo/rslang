@@ -1,2 +1,38 @@
 .Textbook {
+
+}
+.imgContainer {
+  background-color: #c4ab25;
+  width: 200px;
+  height: 200px;
+}
+
+.pagination {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  display: flex;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: #efebeb;
+  margin-bottom: 15px;
+}
+.loadingIcon {
+  min-height: calc(100vh - 50px - 50px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.spinner {
+  height: 100px;
+  width: 100px;
+}
+
+h4 {
+  margin: 0;
 }

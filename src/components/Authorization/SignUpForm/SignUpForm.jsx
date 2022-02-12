@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import './SignUpForm.scss';
@@ -6,11 +6,9 @@ import { useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import SignUpSchema from './Schema/SignUpFormSchema.js';
-import { Context } from '../../../store/store.js';
+import { store } from '../../../store/store.js';
 
 const SignUpForm = () => {
-  const { store } = useContext(Context);
-
   const {
     register,
     formState: { errors },

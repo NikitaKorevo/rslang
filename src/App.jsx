@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './App.scss';
 import { Routes, Route } from 'react-router-dom';
 import ROUTES from './constants/routes';
@@ -14,11 +14,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import SignIn from './pages/Authorization/SIgnIn/SignIn.jsx';
 import SignUp from './pages/Authorization/SignUp/SignUp.jsx';
 import SignUpComplete from './components/Authorization/SignUpComplete/SignUpComplete.jsx';
-import { Context } from './store/store.js';
+import { store } from './store/store.js';
 
 function App() {
-  const { store } = useContext(Context);
-
   useEffect(() => {
     JSON.parse(localStorage.getItem('userInfo'))?.isAuth
       ? store.setAuth(true)

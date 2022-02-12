@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './Header.scss';
 import { NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import ROUTES from '../../constants/routes';
-import { Context } from '../../store/store.js';
+import { store } from '../../store/store.js';
 
 const Header = observer(() => {
-  const { store } = useContext(Context);
   return (
     <header className="Header">
       <nav className="nav">
