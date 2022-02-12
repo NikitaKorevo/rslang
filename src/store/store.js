@@ -2,6 +2,9 @@ import { makeAutoObservable } from 'mobx';
 import Authorization from '../API/authorization.js';
 
 class Store {
+  constructor() {
+    makeAutoObservable(this);
+  }
   guestData = {
     isAuth: false,
     name: null,
@@ -12,9 +15,8 @@ class Store {
 
   isAuth = false;
 
-  constructor() {
-    makeAutoObservable(this);
-  }
+  currentTextbookPage = 1;
+  textbookGroup = 1;
 
   setAuth(bool) {
     this.isAuth = bool;
@@ -53,9 +55,6 @@ class Store {
     this.setAuth(false);
     localStorage.setItem('userInfo', JSON.stringify(this.guestData));
   }
-
-  currentTextbookPage = 1;
-  textbookGroup = 1;
 }
 
 export const store = new Store();
