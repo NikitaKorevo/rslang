@@ -1,6 +1,5 @@
 import { makeAutoObservable } from 'mobx';
 import Authorization from '../API/authorization.js';
-import { createContext } from 'react';
 
 class Store {
   guestData = {
@@ -60,4 +59,3 @@ class Store {
 }
 
 export const store = new Store();
-export const Context = createContext({ store });

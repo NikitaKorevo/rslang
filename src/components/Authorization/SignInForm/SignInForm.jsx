@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import './SignInForm.scss';
 import { useForm } from 'react-hook-form';
@@ -6,11 +6,9 @@ import { yupResolver } from '@hookform/resolvers/yup/dist/yup.js';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import SignInFormSchema from './Schema/SignInFormSchema.js';
-import { Context } from '../../../store/store.js';
+import { store } from '../../../store/store.js';
 
 const SignInForm = observer(() => {
-  const { store } = useContext(Context);
-
   const {
     register,
     formState: { errors },
