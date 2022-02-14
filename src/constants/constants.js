@@ -4,5 +4,8 @@ export const CONSTANTS = {
     users: 'users',
     signIn: 'signin',
     words: 'words'
-  }
+  },
+  textBookPagesAmount: 29,
+  firstTextBookPage: 0,
+  firstTextBookGroup: 0
 };

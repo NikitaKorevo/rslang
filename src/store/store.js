@@ -1,10 +1,12 @@
 import { makeAutoObservable } from 'mobx';
 import Authorization from '../API/authorization.js';
+import { CONSTANTS } from '../constants/constants.js';
 
 class Store {
   constructor() {
     makeAutoObservable(this);
   }
+
   guestData = {
     isAuth: false,
     name: null,
@@ -15,8 +17,28 @@ class Store {
 
   isAuth = false;
 
-  currentTextbookPage = 1;
-  textbookGroup = 1;
+  currentTextbookPage = CONSTANTS.firstTextBookPage;
+  textbookGroup = CONSTANTS.firstTextBookGroup;
+
+  setTextbookGroup(num) {
+    this.textbookGroup = num;
+  }
+
+  setNextPage() {
+    if (this.currentTextbookPage < CONSTANTS.textBookPagesAmount) this.currentTextbookPage++;
+  }
+
+  setPrevPage() {
+    if (this.currentTextbookPage > CONSTANTS.firstTextBookPage) this.currentTextbookPage--;
+  }
+
+  setFirstPage() {
+    this.currentTextbookPage = CONSTANTS.firstTextBookPage;
+  }
+
+  setLastPage() {
+    this.currentTextbookPage = CONSTANTS.textBookPagesAmount;
+  }
 
   setAuth(bool) {
     this.isAuth = bool;
