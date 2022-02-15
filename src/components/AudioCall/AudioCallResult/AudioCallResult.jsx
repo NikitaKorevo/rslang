@@ -1,16 +1,15 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/require-default-props */
 import React from 'react';
 import './AudioCallResult.scss';
 import propTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
+import { CONSTANTS } from '../../../constants/constants';
 
 function AudioCallResult(props) {
   const { isGameFinished, rightChoice, wrongChoice } = props;
 
   function playAudio(path) {
     const audio = new Audio();
-    const srcAudio = `https://rslang-react-app.herokuapp.com/${path}`;
+    const srcAudio = `${CONSTANTS.baseUrl}${path}`;
     audio.src = srcAudio;
     audio.play();
   }
@@ -18,7 +17,7 @@ function AudioCallResult(props) {
   const rightChoiceElement = rightChoice.map((answer) => (
     <div key={answer.word}>
       <button onClick={() => playAudio(answer.audio)} type="button">
-        play
+        послушать
       </button>
       <span> {answer.word}</span>
       <span> — {answer.wordTranslate}</span>
@@ -28,7 +27,7 @@ function AudioCallResult(props) {
   const wrongChoiceElement = wrongChoice.map((answer) => (
     <div key={answer.word}>
       <button onClick={() => playAudio(answer.audio)} type="button">
-        play
+        послушать
       </button>
       <span> {answer.word}</span>
       <span> — {answer.wordTranslate}</span>

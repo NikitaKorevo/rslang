@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './AudioCall.scss';
 import { getRandomNumber } from '../../utils/utils';
-import AudioCallHeadband from '../../components/AudioCallHeadband/AudioCallHeadband';
-import AudioCallProgress from '../../components/AudioCallProgress/AudioCallProgress';
+import AudioCallHeadband from '../../components/AudioCall/AudioCallHeadband/AudioCallHeadband';
+import AudioCallProgress from '../../components/AudioCall/AudioCallProgress/AudioCallProgress';
 
 function AudioCall() {
   const amountQuestions = 20;

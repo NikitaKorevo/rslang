@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './AudioCallProgress.scss';
 import propTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
-import { getRandomNumber, shuffleArray } from '../../utils/utils';
+import { getRandomNumber, shuffleArray } from '../../../utils/utils';
+import { CONSTANTS } from '../../../constants/constants';
 import AudioCallResult from '../AudioCallResult/AudioCallResult';
 
 function AudioCallProgress(props) {
@@ -28,9 +29,7 @@ function AudioCallProgress(props) {
 
   useEffect(() => {
     async function getWords() {
-      const response = await fetch(
-        `https://rslang-react-app.herokuapp.com/words?page=${gamePage}&group=${gameLevel}`
-      );
+      const response = await fetch(`${CONSTANTS.baseUrl}words?page=${gamePage}&group=${gameLevel}`);
       const data = await response.json();
       setWords(data);
 
@@ -60,7 +59,7 @@ function AudioCallProgress(props) {
   useEffect(() => {
     function autoPlayAudio() {
       const audio = new Audio();
-      const srcAudio = `https://rslang-react-app.herokuapp.com/${currentQuestion.audio}`;
+      const srcAudio = `${CONSTANTS.baseUrl}${currentQuestion.audio}`;
       audio.src = srcAudio;
       audio.play();
     }
@@ -69,7 +68,7 @@ function AudioCallProgress(props) {
 
   function playAudio() {
     const audio = new Audio();
-    const srcAudio = `https://rslang-react-app.herokuapp.com/${currentQuestion.audio}`;
+    const srcAudio = `${CONSTANTS.baseUrl}${currentQuestion.audio}`;
     audio.src = srcAudio;
     audio.play();
   }
@@ -124,6 +123,7 @@ function AudioCallProgress(props) {
 
   useEffect(() => {
     function handlerHotkeys(e) {
+      e.preventDefault();
       const buttonNumber = e.key;
       switch (buttonNumber) {
         case '1':
@@ -163,18 +163,14 @@ function AudioCallProgress(props) {
             variant="info"
             onClick={() => playAudio()}
           >
-            play
+            послушать
           </Button>
         </div>
       ) : (
         <div className="scoreboard">
           <img
             className="image"
-            src={
-              currentQuestion
-                ? `https://rslang-react-app.herokuapp.com/${currentQuestion?.image}`
-                : ''
-            }
+            src={currentQuestion ? `${CONSTANTS.baseUrl}${currentQuestion?.image}` : ''}
             alt=""
           />
           <h3>{currentQuestion?.word}</h3>
@@ -184,7 +180,7 @@ function AudioCallProgress(props) {
             variant="info"
             onClick={() => playAudio()}
           >
-            play
+            послушать
           </Button>
         </div>
       )}
