@@ -11,10 +11,10 @@ import Textbook from './pages/Textbook/Textbook';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import SignIn from './pages/Authorization/SIgnIn/SignIn.jsx';
-import SignUp from './pages/Authorization/SignUp/SignUp.jsx';
-import SignUpComplete from './components/Authorization/SignUpComplete/SignUpComplete.jsx';
-import { store } from './store/store.js';
+import SignIn from './pages/Authorization/SIgnIn/SignIn';
+import SignUp from './pages/Authorization/SignUp/SignUp';
+import SignUpComplete from './components/Authorization/SignUpComplete/SignUpComplete';
+import store from './store/store.js';
 
 function App() {
   useEffect(() => {

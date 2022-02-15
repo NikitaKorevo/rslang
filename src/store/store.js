@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import Authorization from '../API/authorization.js';
-import { CONSTANTS } from '../constants/constants.js';
+import Authorization from '../API/authorization';
+import CONSTANTS from '../constants/constants';
 
 class Store {
   constructor() {
@@ -15,9 +15,15 @@ class Store {
     refreshToken: null
   };
 
+  showTranslation = false;
+  setShowTranslation(bool) {
+    this.showTranslation = bool;
+  }
+
   isAuth = false;
 
   currentTextbookPage = CONSTANTS.firstTextBookPage;
+
   textbookGroup = CONSTANTS.firstTextBookGroup;
 
   setTextbookGroup(num) {
@@ -25,11 +31,11 @@ class Store {
   }
 
   setNextPage() {
-    if (this.currentTextbookPage < CONSTANTS.textBookPagesAmount) this.currentTextbookPage++;
+    if (this.currentTextbookPage < CONSTANTS.textBookPagesAmount) this.currentTextbookPage += 1;
   }
 
   setPrevPage() {
-    if (this.currentTextbookPage > CONSTANTS.firstTextBookPage) this.currentTextbookPage--;
+    if (this.currentTextbookPage > CONSTANTS.firstTextBookPage) this.currentTextbookPage -= 1;
   }
 
   setFirstPage() {
@@ -55,7 +61,6 @@ class Store {
   async signIn(signInData) {
     try {
       const response = await Authorization.signIn(signInData);
-      console.log(response.data);
       this.setAuth(true);
 
       const userData = {
@@ -78,5 +83,5 @@ class Store {
     localStorage.setItem('userInfo', JSON.stringify(this.guestData));
   }
 }
-
-export const store = new Store();
+const store = new Store();
+export default store;

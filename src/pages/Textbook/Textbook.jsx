@@ -1,43 +1,50 @@
 import React, { useEffect, useState } from 'react';
+import { Spinner } from 'react-bootstrap';
 import s from './Textbook.module.scss';
-import { getWords } from '../../API/textbook.js';
-import { Dropdown, Pagination, Spinner } from 'react-bootstrap';
-import { store } from '../../store/store.js';
-import { CONSTANTS } from '../../constants/constants.js';
-import TextbookCard from '../../components/TextbookCard/TextbookCard.jsx';
+import { getWords } from '../../API/textbook';
+import store from '../../store/store';
+import CONSTANTS from '../../constants/constants';
+import TextbookCard from '../../components/Textbook/TextbookCard/TextbookCard';
+import PaginationBar from '../../components/Pagination/PaginationBar';
+import SettingsBar from '../../components/Textbook/SettingsBar/SettingsBar';
 
 const Textbook = () => {
   const [words, updateWords] = useState([]);
   const [loadAnimation, setLoadAnimation] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await loadWords();
+    };
+    fetchData();
+  }, []);
 
   const loadWords = async () => {
     try {
       setLoadAnimation(true);
       const data = await getWords(store.textbookGroup, store.currentTextbookPage);
       updateWords(data.data);
-      console.log(data.data[0]);
       setLoadAnimation(false);
+      console.log(data.data);
     } catch (e) {
-      console.log(e);
       setLoadAnimation(false);
     }
   };
 
-  const changeChapter = (num) => {
-    store.setTextbookGroup(num);
-    loadWords();
-  };
-
-  useEffect(async () => {
-    await loadWords();
-  }, [store.currentTextbookPage, store.textbookGroup]);
-
-  const playAudioHandler = (audioStr) => {
-    const audioPath = `${CONSTANTS.baseUrl}${audioStr}`;
+  const playAudioHandler = (...args) => {
+    if (args.length === 0) {
+      setIsPlaying(false);
+      return;
+    }
+    const audioEndPoints = args;
+    const audioPath = `${CONSTANTS.baseUrl}${audioEndPoints[0]}`;
     const audio = new Audio(audioPath);
-    audio.pause();
-    audio.currentTime = 0;
-    audio.play().catch((error) => console.log(error));
+    audio.play();
+    audio.onended = () => {
+      audioEndPoints.shift();
+      playAudioHandler(...audioEndPoints);
+    };
   };
 
   return (
@@ -52,95 +59,20 @@ const Textbook = () => {
         ) : (
           <div>
             <h4>TextBook</h4>
-            <Dropdown>
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Выбрать главу
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => changeChapter(0)}>Глава 1</Dropdown.Item>
-                <Dropdown.Item onClick={() => changeChapter(1)}>Глава 2</Dropdown.Item>
-                <Dropdown.Item onClick={() => changeChapter(2)}>Глава 3</Dropdown.Item>
-                <Dropdown.Item onClick={() => changeChapter(3)}>Глава 4</Dropdown.Item>
-                <Dropdown.Item onClick={() => changeChapter(4)}>Глава 5</Dropdown.Item>
-                <Dropdown.Item onClick={() => changeChapter(5)}>Глава 6</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-            <div className={s.pagination}>
-              <Pagination>
-                <Pagination.First
-                  onClick={async () => {
-                    store.setFirstPage();
-                    await loadWords();
-                  }}
-                  className={
-                    store.currentTextbookPage === CONSTANTS.firstTextBookPage ? 'disabled' : null
-                  }
-                />
-                <Pagination.Prev
-                  onClick={async () => {
-                    store.setPrevPage();
-                    await loadWords();
-                  }}
-                  className={
-                    store.currentTextbookPage === CONSTANTS.firstTextBookPage ? 'disabled' : null
-                  }
-                />
-                <Pagination.Item>{store.currentTextbookPage + 1}</Pagination.Item>
-                <Pagination.Next
-                  onClick={async () => {
-                    store.setNextPage();
-                    await loadWords();
-                  }}
-                  className={
-                    store.currentTextbookPage === CONSTANTS.textBookPagesAmount ? 'disabled' : null
-                  }
-                />
-                <Pagination.Last
-                  onClick={async () => {
-                    store.setLastPage();
-                    await loadWords();
-                  }}
-                  className={
-                    store.currentTextbookPage === CONSTANTS.textBookPagesAmount ? 'disabled' : null
-                  }
-                />
-              </Pagination>
-            </div>
+            <SettingsBar loadWords={loadWords} />
+            <PaginationBar loadWords={loadWords} />
             <div className={s.cards}>
               {words.map((card, pos) => (
-                <TextbookCard card={card} pos={pos} playAudio={playAudioHandler} />
+                <TextbookCard
+                  card={card}
+                  pos={pos}
+                  playAudio={playAudioHandler}
+                  isPlaying={isPlaying}
+                  setIsPlaying={setIsPlaying}
+                />
               ))}
             </div>
-            <div className={s.pagination}>
-              <Pagination>
-                <Pagination.First
-                  onClick={async () => {
-                    store.setFirstPage();
-                    await loadWords();
-                  }}
-                />
-                <Pagination.Prev
-                  onClick={async () => {
-                    store.setPrevPage();
-                    await loadWords();
-                  }}
-                />
-                <Pagination.Item>{store.currentTextbookPage + 1}</Pagination.Item>
-                <Pagination.Next
-                  onClick={async () => {
-                    store.setNextPage();
-                    await loadWords();
-                  }}
-                />
-                <Pagination.Last
-                  onClick={async () => {
-                    store.setLastPage();
-                    await loadWords();
-                  }}
-                />
-              </Pagination>
-            </div>
+            <PaginationBar loadWords={loadWords} />
           </div>
         )}
       </div>

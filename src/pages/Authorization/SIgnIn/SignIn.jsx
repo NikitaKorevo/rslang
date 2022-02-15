@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import ROUTES from '../../../constants/routes';
 import avatarIcon from '../../../assets/svg/avatar.svg';
-import SignInForm from '../../../components/Authorization/SignInForm/SignInForm.jsx';
+import SignInForm from '../../../components/Authorization/SignInForm/SignInForm';
 
 function SignIn() {
   return (

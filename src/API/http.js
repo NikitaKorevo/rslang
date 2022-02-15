@@ -1,4 +1,4 @@
-import { CONSTANTS } from '../constants/constants.js';
+import CONSTANTS from '../constants/constants';
 import axios from 'axios';
 
 const $api = axios.create({

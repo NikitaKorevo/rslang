@@ -2,11 +2,11 @@ import React, { useRef, useState } from 'react';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import './SignInForm.scss';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup.js';
+import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import SignInFormSchema from './Schema/SignInFormSchema.js';
-import { store } from '../../../store/store.js';
+import SignInFormSchema from './Schema/SignInFormSchema';
+import store from '../../../store/store';
 
 const SignInForm = observer(() => {
   const {

@@ -1,0 +1,57 @@
+.transcript {
+  display: flex;
+  align-items: center;
+}
+
+.block {
+  display: flex;
+  align-items: center;
+}
+
+.transcription {
+  margin-right: 5px;
+}
+
+.card {
+  display: flex;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #efebeb;
+  margin-bottom: 15px;
+
+  .word {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-left: 10px;
+  }
+
+  .img {
+    width: 200px;
+    height: 200px;
+    margin-right: 15px;
+    border-radius: 15px;
+  }
+
+  .spanTitle {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .translatedBlock {
+    margin-top: 10px;
+  }
+}
+
+.playWordIcon {
+  align-self: center;
+  justify-self:end;
+  margin: 0 10px 0 auto;
+  width: 30px;
+  height: 30px;
+  background: url("../../../assets/svg/sound.svg") no-repeat;
+  cursor: pointer;
+  &:active {
+    transform: scale(1.05);
+  };
+}

@@ -1,4 +1,4 @@
-export const CONSTANTS = {
+const CONSTANTS = {
   baseUrl: 'https://rslang-react-app.herokuapp.com/',
   endPoint: {
     users: 'users',
@@ -9,3 +9,5 @@ export const CONSTANTS = {
   firstTextBookPage: 0,
   firstTextBookGroup: 0
 };
+
+export default CONSTANTS;

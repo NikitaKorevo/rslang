@@ -1,5 +1,5 @@
-import { CONSTANTS } from '../constants/constants.js';
-import $api from './http.js';
+import CONSTANTS from '../constants/constants';
+import $api from './http';
 
 class Authorization {
   static async createUser(userData) {
