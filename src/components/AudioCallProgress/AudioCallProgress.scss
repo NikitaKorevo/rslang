@@ -1,2 +1,27 @@
 .AudioCallProgress {
+  text-align: center;
+  margin: 0 auto;
+
+  .scoreboard {
+    display: flex;
+    justify-content: end;
+    flex-direction: column;
+    min-height: 400px;
+
+    .image {
+      display: block;
+      max-height: auto;
+      margin: 0 auto;
+      height: 300px;
+    }
+
+    .button-play-audio {
+      width: 100%;
+      max-width: 100px;
+      margin: 0 auto;
+    }
+  }
+
+  .control {
+  }
 }

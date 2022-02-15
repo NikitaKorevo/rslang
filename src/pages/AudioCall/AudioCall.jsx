@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AudioCall.scss';
-import { Button, ButtonGroup, Col, Container } from 'react-bootstrap';
+import { getRandomNumber } from '../../utils/utils';
 import AudioCallHeadband from '../../components/AudioCallHeadband/AudioCallHeadband';
 import AudioCallProgress from '../../components/AudioCallProgress/AudioCallProgress';
 
 function AudioCall() {
-  const [data] = useState(0);
-  const [amountQuestions, setAmountQuestions] = useState(20);
+  const amountQuestions = 20;
+  const amountPages = 30;
+
   const [gameLevel, setGameLevel] = useState('0');
+  const [gamePage, setGamePage] = useState('');
   const [isGameInProgress, setIsGameInProgress] = useState(false);
 
   useEffect(() => {
-    console.log(gameLevel);
-  }, [gameLevel]);
+    setGamePage(getRandomNumber(0, amountPages - 1).toString());
+  }, [amountQuestions]);
 
   return (
     <div className="AudioCall">
       {isGameInProgress ? (
-        <AudioCallProgress />
+        <AudioCallProgress gameLevel={gameLevel} gamePage={gamePage} />
       ) : (
         <AudioCallHeadband
           gameLevel={gameLevel}
