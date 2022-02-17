@@ -5,6 +5,7 @@
   }
 }
 
+
 .dropdown {
   background-color: #02a7a7;
 }
@@ -38,4 +39,8 @@ h4 {
 
 .cards {
   min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import Authorization from '../API/authorization';
+import AuthAPI from '../API/authAPI';
 
 class AuthStore {
   constructor() {
@@ -22,7 +22,7 @@ class AuthStore {
 
   async signUp(signUpData) {
     try {
-      return await Authorization.createUser(signUpData);
+      return await AuthAPI.createUser(signUpData);
     } catch (e) {
       return e;
     }
@@ -30,7 +30,7 @@ class AuthStore {
 
   async signIn(signInData) {
     try {
-      const response = await Authorization.signIn(signInData);
+      const response = await AuthAPI.signIn(signInData);
       runInAction(() => {
         this.setAuth(true);
 
@@ -54,6 +54,29 @@ class AuthStore {
   signOut() {
     this.setAuth(false);
     localStorage.setItem('userInfo', JSON.stringify(this.guestData));
+  }
+
+  async updateTokens() {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const refreshToken = userInfo.refreshToken;
+    const userId = userInfo.userId;
+    console.log(userId, refreshToken);
+    try {
+      const resp = await AuthAPI.getTokens(userId, refreshToken);
+      const updatedUserData = {
+        isAuth: this.isAuth,
+        name: userInfo.name,
+        userId: userInfo.userId,
+        token: resp.data.token,
+        refreshToken: resp.data.refreshToken
+      };
+
+      localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
+
+      console.log('REFRESH TOKEN: ', resp);
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 

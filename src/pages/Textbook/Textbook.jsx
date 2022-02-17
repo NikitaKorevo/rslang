@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import s from './Textbook.module.scss';
-import { getWords } from '../../API/textbook';
+import { getWords } from '../../API/textbookAPI';
 import CONSTANTS from '../../constants/constants';
 import TextbookCard from '../../components/Textbook/TextbookCard/TextbookCard';
 import PaginationBar from '../../components/Pagination/PaginationBar';
@@ -67,15 +67,19 @@ const Textbook = () => {
             <SettingsBar loadWords={loadWords} />
             <PaginationBar loadWords={loadWords} />
             <div className={s.cards}>
-              {words.map((card, pos) => (
-                <TextbookCard
-                  card={card}
-                  pos={pos}
-                  playAudio={playAudioHandler}
-                  isPlaying={isPlaying}
-                  setIsPlaying={setIsPlaying}
-                />
-              ))}
+              {words.length === 0 ? (
+                <div>Сложных слов не обнаружено...</div>
+              ) : (
+                words.map((card, pos) => (
+                  <TextbookCard
+                    card={card}
+                    pos={pos}
+                    playAudio={playAudioHandler}
+                    isPlaying={isPlaying}
+                    setIsPlaying={setIsPlaying}
+                  />
+                ))
+              )}
             </div>
             <PaginationBar loadWords={loadWords} />
           </div>
