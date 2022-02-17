@@ -1,34 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './AudioCall.scss';
-import { getRandomNumber } from '../../utils/utils';
+import { observer } from 'mobx-react-lite';
 import AudioCallHeadband from '../../components/AudioCall/AudioCallHeadband/AudioCallHeadband';
 import AudioCallProgress from '../../components/AudioCall/AudioCallProgress/AudioCallProgress';
 
-function AudioCall() {
-  const amountQuestions = 20;
-  const amountPages = 30;
-
-  const [gameLevel, setGameLevel] = useState('0');
-  const [gamePage, setGamePage] = useState('');
+const AudioCall = observer(() => {
   const [isGameInProgress, setIsGameInProgress] = useState(false);
-
-  useEffect(() => {
-    setGamePage(getRandomNumber(0, amountPages - 1).toString());
-  }, [amountQuestions]);
 
   return (
     <div className="AudioCall">
       {isGameInProgress ? (
-        <AudioCallProgress gameLevel={gameLevel} gamePage={gamePage} />
+        <AudioCallProgress />
       ) : (
-        <AudioCallHeadband
-          gameLevel={gameLevel}
-          setGameLevel={setGameLevel}
-          setIsGameInProgress={setIsGameInProgress}
-        />
+        <AudioCallHeadband setIsGameInProgress={setIsGameInProgress} />
       )}
     </div>
   );
-}
+});
 
 export default AudioCall;

@@ -17,6 +17,8 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react","only-warn"],
-  "rules": {}
+  "plugins": ["react", "only-warn"],
+  "rules": {
+    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }]
+  }
 }

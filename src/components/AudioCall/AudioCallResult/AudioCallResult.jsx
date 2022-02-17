@@ -3,6 +3,7 @@ import './AudioCallResult.scss';
 import propTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
 import { CONSTANTS } from '../../../constants/constants';
+import audioCall from '../../../store/audioCall';
 
 function AudioCallResult(props) {
   const { isGameFinished, rightChoice, wrongChoice } = props;
@@ -36,6 +37,7 @@ function AudioCallResult(props) {
 
   function handlerCloseButton() {
     window.location.hash = '/';
+    audioCall.setGamePage(null);
   }
 
   return (

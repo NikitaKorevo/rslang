@@ -2,12 +2,14 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { Button, Form } from 'react-bootstrap';
 import './AudioCallHeadband.scss';
+import { observer } from 'mobx-react-lite';
+import audioCall from '../../../store/audioCall';
 
-function AudioCallHeadband(props) {
-  const { gameLevel, setGameLevel, setIsGameInProgress } = props;
+const AudioCallHeadband = observer((props) => {
+  const { setIsGameInProgress } = props;
 
   function changeGameLevel(e) {
-    setGameLevel(e.target.value);
+    audioCall.setGameLevel(e.target.value);
   }
   function startGame() {
     setIsGameInProgress(true);
@@ -17,7 +19,12 @@ function AudioCallHeadband(props) {
     <main className="AudioCallHeadband">
       <h2>Аудиовызов</h2>
       <p>Выберите правильный перевод услышанного слова.</p>
-      <Form.Select className="select" value={gameLevel} onChange={(e) => changeGameLevel(e)}>
+      <Form.Select
+        className="select"
+        value={audioCall.gameLevel}
+        hidden={audioCall.gamePage}
+        onChange={(e) => changeGameLevel(e)}
+      >
         <option value="0">1 уровень</option>
         <option value="1">2 уровень</option>
         <option value="2">3 уровень</option>
@@ -28,11 +35,9 @@ function AudioCallHeadband(props) {
       <Button onClick={() => startGame()}>начать</Button>
     </main>
   );
-}
+});
 
 AudioCallHeadband.propTypes = {
-  gameLevel: propTypes.string.isRequired,
-  setGameLevel: propTypes.func.isRequired,
   setIsGameInProgress: propTypes.func.isRequired
 };
 
