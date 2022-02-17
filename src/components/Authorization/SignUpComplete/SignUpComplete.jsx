@@ -1,7 +1,7 @@
 import React from 'react';
 import './signUpComplete.scss';
 import ReactConfetti from 'react-confetti';
-import useWindowSize from 'react-use/lib/useWindowSize.js';
+import useWindowSize from 'react-use/lib/useWindowSize';
 import signUpIcon from '../../../assets/svg/sign-up-success.svg';
 
 const SignUpComplete = () => {

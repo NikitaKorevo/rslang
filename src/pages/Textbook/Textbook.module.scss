@@ -1,10 +1,13 @@
-.Textbook {
-
+.textbook {
+  padding: 0 20px;
+  h4 {
+    padding: 10px;
+  }
 }
-.imgContainer {
-  background-color: #c4ab25;
-  width: 200px;
-  height: 200px;
+
+
+.dropdown {
+  background-color: #02a7a7;
 }
 
 .pagination {
@@ -13,13 +16,6 @@
   justify-content: center;
 }
 
-.card {
-  display: flex;
-  padding: 5px;
-  border-radius: 10px;
-  background-color: #efebeb;
-  margin-bottom: 15px;
-}
 .loadingIcon {
   min-height: calc(100vh - 50px - 50px);
   display: flex;
@@ -35,4 +31,16 @@
 
 h4 {
   margin: 0;
+}
+
+.page-link {
+  color:teal;
+}
+
+.cards {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

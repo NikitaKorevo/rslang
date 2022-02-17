@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './App.scss';
 import { Routes, Route } from 'react-router-dom';
 import ROUTES from './constants/routes';
@@ -11,16 +11,17 @@ import Textbook from './pages/Textbook/Textbook';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import SignIn from './pages/Authorization/SIgnIn/SignIn.jsx';
-import SignUp from './pages/Authorization/SignUp/SignUp.jsx';
-import SignUpComplete from './components/Authorization/SignUpComplete/SignUpComplete.jsx';
-import { store } from './store/store.js';
+import SignIn from './pages/Authorization/SIgnIn/SignIn';
+import SignUp from './pages/Authorization/SignUp/SignUp';
+import SignUpComplete from './components/Authorization/SignUpComplete/SignUpComplete';
+import { Context } from './index';
 
 function App() {
+  const { rootStore } = useContext(Context);
   useEffect(() => {
     JSON.parse(localStorage.getItem('userInfo'))?.isAuth
-      ? store.setAuth(true)
-      : store.setAuth(false);
+      ? rootStore.authStore.setAuth(true)
+      : rootStore.authStore.setAuth(false);
   });
 
   return (

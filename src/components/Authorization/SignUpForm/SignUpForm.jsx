@@ -1,14 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import './SignUpForm.scss';
 import { useForm } from 'react-hook-form';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import SignUpSchema from './Schema/SignUpFormSchema.js';
-import { store } from '../../../store/store.js';
+import { Context } from '../../../index';
 
 const SignUpForm = () => {
+  const { rootStore } = useContext(Context);
   const {
     register,
     formState: { errors },
@@ -37,11 +37,11 @@ const SignUpForm = () => {
       password: inputData.password
     };
 
-    const createUserResp = await store.signUp(signUpData);
+    const createUserResp = await rootStore.authStore.signUp(signUpData);
     console.log(createUserResp);
 
     if (createUserResp.status === 200) {
-      const signInResp = await store.signIn(signInData);
+      const signInResp = await rootStore.authStore.signIn(signInData);
       console.log(signInResp);
       navigate('success');
     } else if (createUserResp.status === 417 || 423) {

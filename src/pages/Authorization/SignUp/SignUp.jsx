@@ -3,7 +3,7 @@ import '../Authorization.scss';
 import { Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import ROUTES from '../../../constants/routes';
-import SignUpForm from '../../../components/Authorization/SignUpForm/SignUpForm.jsx';
+import SignUpForm from '../../../components/Authorization/SignUpForm/SignUpForm';
 import avatarIcon from '../../../assets/svg/register-logo.svg';
 
 function SignUp() {

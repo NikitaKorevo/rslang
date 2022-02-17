@@ -1,51 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Spinner } from 'react-bootstrap';
 import s from './Textbook.module.scss';
-import { getWords } from '../../API/textbook.js';
-import { Pagination, Spinner } from 'react-bootstrap';
-import { store } from '../../store/store.js';
+import { getWords } from '../../API/textbookAPI';
+import CONSTANTS from '../../constants/constants';
+import TextbookCard from '../../components/Textbook/TextbookCard/TextbookCard';
+import PaginationBar from '../../components/Pagination/PaginationBar';
+import SettingsBar from '../../components/Textbook/SettingsBar/SettingsBar';
+import { Context } from '../../index';
 
 const Textbook = () => {
+  const { rootStore } = useContext(Context);
+
   const [words, updateWords] = useState([]);
   const [loadAnimation, setLoadAnimation] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await loadWords();
+    };
+    fetchData();
+  }, []);
 
   const loadWords = async () => {
     try {
       setLoadAnimation(true);
-      const data = await getWords(store.currentTextbookPage, store.textbookGroup);
+      const data = await getWords(
+        rootStore.textbookStore.textbookGroup,
+        rootStore.textbookStore.currentTextbookPage
+      );
       updateWords(data.data);
-      console.log(data.headers);
       setLoadAnimation(false);
+      console.log(data.data);
     } catch (e) {
-      console.log(e);
       setLoadAnimation(false);
     }
   };
 
-  useEffect(async () => {
-    await loadWords();
-  }, []);
-
-  const cardList = words?.map((card, pos) => {
-    return (
-      <div className={s.card} key={pos}>
-        <div className={s.imgContainer}>
-          <img src="" alt="" />
-        </div>
-        <div className={s.cardTextContainer}>
-          <span className={s.word}>{card.word}</span>
-          <span className={s.transcription}>{card.transcription}</span>
-          <div className={s.wordTranslate}>{card.wordTranslate}</div>
-          <div className={s.textExample}>{card.textExample}</div>
-          <div className={s.textExampleTranslate}>{card.textExampleTranslate}</div>
-          <div className={s.textMeaning}>{card.textMeaning}</div>
-          <div className={s.textMeaningTranslate}>{card.textMeaningTranslate}</div>
-        </div>
-      </div>
-    );
-  });
+  const playAudioHandler = (...args) => {
+    if (args.length === 0) {
+      setIsPlaying(false);
+      return;
+    }
+    const audioEndPoints = args;
+    const audioPath = `${CONSTANTS.baseUrl}${audioEndPoints[0]}`;
+    const audio = new Audio(audioPath);
+    audio.play();
+    audio.onended = () => {
+      audioEndPoints.shift();
+      playAudioHandler(...audioEndPoints);
+    };
+  };
 
   return (
-    <div className={s.Textbook}>
+    <div className={s.textbook}>
       <div className={s.container}>
         {loadAnimation ? (
           <div className={s.loadingIcon}>
@@ -56,31 +64,24 @@ const Textbook = () => {
         ) : (
           <div>
             <h4>TextBook</h4>
-            <div className={s.pagination}>
-              <Pagination>
-                <Pagination.First />
-                <Pagination.Prev />
-
-                <Pagination.Item active>{1}</Pagination.Item>
-
-                <Pagination.Item>{30}</Pagination.Item>
-                <Pagination.Next />
-                <Pagination.Last />
-              </Pagination>
+            <SettingsBar loadWords={loadWords} />
+            <PaginationBar loadWords={loadWords} />
+            <div className={s.cards}>
+              {words.length === 0 ? (
+                <div>Сложных слов не обнаружено...</div>
+              ) : (
+                words.map((card, pos) => (
+                  <TextbookCard
+                    card={card}
+                    pos={pos}
+                    playAudio={playAudioHandler}
+                    isPlaying={isPlaying}
+                    setIsPlaying={setIsPlaying}
+                  />
+                ))
+              )}
             </div>
-            <div className={s.cards}>{cardList}</div>
-            <div className={s.pagination}>
-              <Pagination>
-                <Pagination.First />
-                <Pagination.Prev />
-
-                <Pagination.Item active>{1}</Pagination.Item>
-
-                <Pagination.Item>{30}</Pagination.Item>
-                <Pagination.Next />
-                <Pagination.Last />
-              </Pagination>
-            </div>
+            <PaginationBar loadWords={loadWords} />
           </div>
         )}
       </div>
