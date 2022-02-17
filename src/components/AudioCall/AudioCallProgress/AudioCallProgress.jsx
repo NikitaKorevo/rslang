@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './AudioCallProgress.scss';
-import propTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
+import { observer } from 'mobx-react-lite';
 import { getRandomNumber, shuffleArray } from '../../../utils/utils';
 import { CONSTANTS } from '../../../constants/constants';
+import audioCall from '../../../store/audioCall';
 import AudioCallResult from '../AudioCallResult/AudioCallResult';
 
-function AudioCallProgress(props) {
-  const { gameLevel, gamePage } = props;
+const AudioCallProgress = observer(() => {
+  const amountPages = 30;
 
   const [isGameFinished, setIsGameFinished] = useState(false);
   const [isQuestion, setIsQuestion] = useState(false);
@@ -29,7 +30,17 @@ function AudioCallProgress(props) {
 
   useEffect(() => {
     async function getWords() {
-      const response = await fetch(`${CONSTANTS.baseUrl}words?page=${gamePage}&group=${gameLevel}`);
+      const gamePage = audioCall.gamePage
+        ? audioCall.gamePage
+        : getRandomNumber(0, amountPages - 1).toString();
+
+      // TODO: delete console.log
+      console.log('gamePage', gamePage);
+      console.log('audioCall.gameLevel', audioCall.gameLevel);
+
+      const response = await fetch(
+        `${CONSTANTS.baseUrl}words?page=${gamePage}&group=${audioCall.gameLevel}`
+      );
       const data = await response.json();
       setWords(data);
 
@@ -54,7 +65,7 @@ function AudioCallProgress(props) {
       setIsQuestion(true);
     }
     getWords();
-  }, [gamePage, gameLevel]);
+  }, []);
 
   useEffect(() => {
     function autoPlayAudio() {
@@ -237,11 +248,6 @@ function AudioCallProgress(props) {
       )}
     </div>
   );
-}
-
-AudioCallProgress.propTypes = {
-  gameLevel: propTypes.string.isRequired,
-  gamePage: propTypes.string.isRequired
-};
+});
 
 export default AudioCallProgress;
