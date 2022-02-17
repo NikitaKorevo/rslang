@@ -1,10 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import s from './TextbookCard.module.scss';
 import CONSTANTS from '../../../constants/constants.js';
-import store from '../../../store/store';
 import { observer } from 'mobx-react-lite';
+import { Context } from '../../../index';
 
 const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying }) => {
+  const { rootStore } = useContext(Context);
+
+  const createUserWord = async ({ userId, wordId, word, token }) => {
+    try {
+      const rawResponse = await fetch(
+        `${CONSTANTS.baseUrl}${CONSTANTS.endPoint.users}/${userId}/words/${wordId}`,
+        {
+          method: 'POST',
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(word)
+        }
+      );
+
+      if (rawResponse.status === 417) {
+        console.log('Word has already added!');
+      } else {
+        const content = await rawResponse.json();
+        console.log(content);
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   return (
     <div className={s.card} key={pos}>
       <div className={s.imgWrapper}>
@@ -24,7 +53,7 @@ const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying }) => {
           <div className={s.spanTitle}>Example:</div>
           <div className={s.textExample} dangerouslySetInnerHTML={{ __html: card.textExample }} />
         </div>
-        {store.showTranslation ? (
+        {rootStore.textbookStore.showTranslation ? (
           <div className={[s.translatedBlock]}>
             <div className={s.translate}>
               <span className={s.spanTitle}>Перевод:</span>
@@ -43,15 +72,38 @@ const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying }) => {
           <div />
         )}
       </div>
-      <div
-        className={s.playWordIcon}
-        onClick={async () => {
-          if (!isPlaying) {
-            setIsPlaying(true);
-            await playAudio(card.audio, card.audioMeaning, card.audioExample);
-          }
-        }}
-      />
+      <div className={s.cardIcons}>
+        <div
+          className={[s.playWordIcon, s.cardIcon].join(' ')}
+          onClick={async () => {
+            if (!isPlaying) {
+              setIsPlaying(true);
+              await playAudio(card.audio, card.audioMeaning, card.audioExample);
+            }
+          }}
+        />
+        {rootStore.authStore.isAuth ? (
+          <div className={[s.learnedWordIcon, s.cardIcon].join(' ')} />
+        ) : null}
+        {rootStore.authStore.isAuth ? (
+          <div
+            className={[s.complicatedWordIcon, s.cardIcon].join(' ')}
+            onClick={() => {
+              const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+              const userId = userInfo.userId;
+              const wordId = card.id;
+              const word = {
+                difficulty: 'weak',
+                optional: { testFieldString: 'test', testFieldBoolean: true }
+              };
+              const token = userInfo.token;
+              console.log(userId, wordId, word, token);
+
+              createUserWord({ userId, wordId, word, token }).then((data) => console.log(data));
+            }}
+          />
+        ) : null}
+      </div>
     </div>
   );
 };

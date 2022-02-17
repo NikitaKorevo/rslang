@@ -43,15 +43,31 @@
   }
 }
 
-.playWordIcon {
-  align-self: center;
-  justify-self:end;
-  margin: 0 10px 0 auto;
-  width: 30px;
-  height: 30px;
-  background: url("../../../assets/svg/sound.svg") no-repeat;
+.cardIcon {
+  width: 25px;
+  height: 25px;
   cursor: pointer;
+  margin-bottom: 15px;
   &:active {
     transform: scale(1.05);
   };
+}
+
+.playWordIcon {
+  background: url("../../../assets/svg/headphones-icon.svg") 0 0/cover no-repeat; ;
+}
+
+.learnedWordIcon {
+  background: url("../../../assets/svg/learned-word-icon.svg") 0 0/cover no-repeat;;
+}
+
+.complicatedWordIcon {
+  background: url("../../../assets/svg/learnedWord-icon.svg") 0 0/cover no-repeat;;
+}
+
+.cardIcons {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin: 0 30px 0 auto;
 }

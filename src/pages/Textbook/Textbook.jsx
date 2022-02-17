@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import s from './Textbook.module.scss';
 import { getWords } from '../../API/textbook';
-import store from '../../store/store';
 import CONSTANTS from '../../constants/constants';
 import TextbookCard from '../../components/Textbook/TextbookCard/TextbookCard';
 import PaginationBar from '../../components/Pagination/PaginationBar';
 import SettingsBar from '../../components/Textbook/SettingsBar/SettingsBar';
+import { Context } from '../../index';
 
 const Textbook = () => {
+  const { rootStore } = useContext(Context);
+
   const [words, updateWords] = useState([]);
   const [loadAnimation, setLoadAnimation] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -23,7 +25,10 @@ const Textbook = () => {
   const loadWords = async () => {
     try {
       setLoadAnimation(true);
-      const data = await getWords(store.textbookGroup, store.currentTextbookPage);
+      const data = await getWords(
+        rootStore.textbookStore.textbookGroup,
+        rootStore.textbookStore.currentTextbookPage
+      );
       updateWords(data.data);
       setLoadAnimation(false);
       console.log(data.data);

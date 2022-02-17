@@ -1,63 +1,66 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Header.scss';
 import { NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import ROUTES from '../../constants/routes';
-import store from '../../store/store';
+import { Context } from '../../index';
 
-const Header = observer(() => (
-  <header className="Header">
-    <nav className="nav">
-      <ul className="nav__list">
-        <li className="nav__item">
-          <NavLink className="nav__link" to={ROUTES.HOME}>
-            Главная
-          </NavLink>
-        </li>
-        <li className="nav__item">
-          <NavLink className="nav__link" to={ROUTES.TEXTBOOK}>
-            Учебник
-          </NavLink>
-        </li>
-        <li className="nav__item">
-          <NavLink className="nav__link" to={ROUTES.AUDIO_CALL}>
-            Аудиовызов
-          </NavLink>
-        </li>
-        <li className="nav__item">
-          <NavLink className="nav__link" to={ROUTES.SPRINT}>
-            Спринт
-          </NavLink>
-        </li>
-        <li className="nav__item">
-          <NavLink className="nav__link" to={ROUTES.STATISTICS}>
-            Статистика
-          </NavLink>
-        </li>
-        <li className="nav__item">
-          <NavLink className="nav__link" to={ROUTES.DEVELOPMENT_TEAM}>
-            Команда
-          </NavLink>
-        </li>
-        <li className="nav__item">
-          {store.isAuth ? (
-            <div
-              className="nav__link sign-out-btn"
-              onClick={() => {
-                store.signOut();
-              }}
-            >
-              Выйти
-            </div>
-          ) : (
-            <NavLink className="nav__link" to={ROUTES.SIGN_IN}>
-              Войти
+const Header = observer(() => {
+  const { rootStore } = useContext(Context);
+  return (
+    <header className="Header">
+      <nav className="nav">
+        <ul className="nav__list">
+          <li className="nav__item">
+            <NavLink className="nav__link" to={ROUTES.HOME}>
+              Главная
             </NavLink>
-          )}
-        </li>
-      </ul>
-    </nav>
-  </header>
-));
+          </li>
+          <li className="nav__item">
+            <NavLink className="nav__link" to={ROUTES.TEXTBOOK}>
+              Учебник
+            </NavLink>
+          </li>
+          <li className="nav__item">
+            <NavLink className="nav__link" to={ROUTES.AUDIO_CALL}>
+              Аудиовызов
+            </NavLink>
+          </li>
+          <li className="nav__item">
+            <NavLink className="nav__link" to={ROUTES.SPRINT}>
+              Спринт
+            </NavLink>
+          </li>
+          <li className="nav__item">
+            <NavLink className="nav__link" to={ROUTES.STATISTICS}>
+              Статистика
+            </NavLink>
+          </li>
+          <li className="nav__item">
+            <NavLink className="nav__link" to={ROUTES.DEVELOPMENT_TEAM}>
+              Команда
+            </NavLink>
+          </li>
+          <li className="nav__item">
+            {rootStore.authStore.isAuth ? (
+              <div
+                className="nav__link sign-out-btn"
+                onClick={() => {
+                  rootStore.authStore.signOut();
+                }}
+              >
+                Выйти
+              </div>
+            ) : (
+              <NavLink className="nav__link" to={ROUTES.SIGN_IN}>
+                Войти
+              </NavLink>
+            )}
+          </li>
+        </ul>
+      </nav>
+    </header>
+  );
+});
 
 export default Header;

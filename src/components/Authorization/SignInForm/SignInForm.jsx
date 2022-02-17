@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import './SignInForm.scss';
 import { useForm } from 'react-hook-form';
@@ -6,9 +6,11 @@ import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import SignInFormSchema from './Schema/SignInFormSchema';
-import store from '../../../store/store';
+import PropTypes from 'prop-types';
+import { Context } from '../../../index';
 
 const SignInForm = observer(() => {
+  const { rootStore } = useContext(Context);
   const {
     register,
     formState: { errors },
@@ -25,14 +27,12 @@ const SignInForm = observer(() => {
 
   const onSubmit = async (inputData) => {
     setLoadAnimation(true);
-    console.log('CLIKED');
 
-    const signInResp = await store.signIn(inputData);
+    const signInResp = await rootStore.authStore.signIn(inputData);
 
     if (signInResp.status !== 200) {
       emailErrorRef.current.innerText = 'Неверный логин или пароль';
     } else {
-      console.log(signInResp);
       navigate('/');
     }
     setLoadAnimation(false);

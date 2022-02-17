@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import s from './SettingsBar.module.scss';
 import { Dropdown, Form } from 'react-bootstrap';
-import store from '../../../store/store';
 import { observer } from 'mobx-react-lite';
+import { Context } from '../../../index';
 
 const SettingsBar = observer(({ loadWords }) => {
+  const { rootStore } = useContext(Context);
   const changeChapter = async (num) => {
-    store.setTextbookGroup(num);
+    rootStore.textbookStore.setTextbookGroup(num);
     await loadWords();
   };
 
@@ -14,7 +15,7 @@ const SettingsBar = observer(({ loadWords }) => {
     <div className={s.settingsBar}>
       <Dropdown>
         <Dropdown.Toggle variant="success" id="dropdown-basic">
-          Раздел {store.textbookGroup + 1}
+          Раздел {rootStore.textbookStore.textbookGroup + 1}
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item onClick={async () => await changeChapter(0)}>Раздел 1</Dropdown.Item>
@@ -23,6 +24,7 @@ const SettingsBar = observer(({ loadWords }) => {
           <Dropdown.Item onClick={async () => await changeChapter(3)}>Раздел 4</Dropdown.Item>
           <Dropdown.Item onClick={async () => await changeChapter(4)}>Раздел 5</Dropdown.Item>
           <Dropdown.Item onClick={async () => await changeChapter(5)}>Раздел 6</Dropdown.Item>
+          <Dropdown.Item onClick={async () => await changeChapter(6)}>Раздел 7</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
       <Dropdown className={s.settingsDropdown}>
@@ -34,13 +36,13 @@ const SettingsBar = observer(({ loadWords }) => {
             <Form.Check
               type="switch"
               id="custom-switch"
-              label="Скрыть перевод"
+              label="Перевод"
               onChange={() => {
-                store.showTranslation
-                  ? store.setShowTranslation(false)
-                  : store.setShowTranslation(true);
+                rootStore.textbookStore.showTranslation
+                  ? rootStore.textbookStore.setShowTranslation(false)
+                  : rootStore.textbookStore.setShowTranslation(true);
               }}
-              checked={store.showTranslation}
+              checked={rootStore.textbookStore.showTranslation}
             />
           </Form>
         </Dropdown.Menu>
