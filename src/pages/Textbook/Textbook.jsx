@@ -87,10 +87,10 @@ const Textbook = () => {
               {words.length === 0 ? (
                 <div>Сложных слов не обнаружено...</div>
               ) : (
-                words.map((card, pos) => (
+                words.map((card, key) => (
                   <TextbookCard
                     card={card}
-                    pos={pos}
+                    pos={key}
                     playAudio={playAudioHandler}
                     isPlaying={isPlaying}
                     setIsPlaying={setIsPlaying}

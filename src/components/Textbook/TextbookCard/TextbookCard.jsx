@@ -25,13 +25,12 @@ const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying }) => {
         console.log('Word has already added!');
       } else if (rawResponse.status === 401) {
         await rootStore.authStore.updateTokens();
-        console.log('REFRESH YOUR TOKEN!');
         await markWord(status);
       } else {
         console.log(await rawResponse.json());
       }
     } catch (e) {
-      console.log('ERRO!');
+      console.error(e);
     }
   };
 

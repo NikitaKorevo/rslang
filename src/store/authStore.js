@@ -33,7 +33,6 @@ class AuthStore {
       const response = await AuthAPI.signIn(signInData);
       runInAction(() => {
         this.setAuth(true);
-
         const userData = {
           isAuth: this.isAuth,
           name: response.data.name,
@@ -41,10 +40,8 @@ class AuthStore {
           token: response.data.token,
           refreshToken: response.data.refreshToken
         };
-
         localStorage.setItem('userInfo', JSON.stringify(userData));
       });
-
       return response;
     } catch (e) {
       return e;
@@ -60,7 +57,6 @@ class AuthStore {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const refreshToken = userInfo.refreshToken;
     const userId = userInfo.userId;
-    console.log(userId, refreshToken);
 
     try {
       const resp = await AuthAPI.getTokens(userId, refreshToken);
@@ -71,12 +67,12 @@ class AuthStore {
         token: resp.data.token,
         refreshToken: resp.data.refreshToken
       };
-
       localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
-
-      console.log('REFRESH TOKEN: ', resp);
+      console.log('%cTokens successfully updated>>>>>>>>', 'color: green;');
+      console.log(`new TOKEN: %c${resp.data.token}`, 'color:yellow');
+      console.log(`new refreshTOKEN: %c${resp.data.refreshToken}`, 'color:yellow');
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 }
