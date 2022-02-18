@@ -11,20 +11,17 @@ const Textbook = () => {
   const [words, updateWords] = useState([]);
   const [loadAnimation, setLoadAnimation] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hardWordsId, setHardWordsId] = useState([]);
 
-  useEffect(async () => {
-    if (!localStorage.getItem('currentPage')) {
-      localStorage.setItem('currentPage', '0');
-      localStorage.setItem('textbookShowTranslation', 'true');
-      localStorage.setItem('textbookGroup', '0');
+  const getComplicatedWords = async () => {
+    try {
+      const data = await getUserHardWords();
+      const hardWordsIdList = data.data[0].paginatedResults.map((el) => el._id);
+      setHardWordsId(hardWordsIdList);
+    } catch (e) {
+      console.log(e);
     }
-
-    await loadUserHardWords();
-
-    Number(localStorage.getItem('textbookGroup')) === 6
-      ? await loadUserHardWords()
-      : await loadWords();
-  }, []);
+  };
 
   const loadUserHardWords = async () => {
     try {
@@ -33,6 +30,7 @@ const Textbook = () => {
       console.log(data.data[0].paginatedResults);
       const hardWords = data.data[0].paginatedResults;
       updateWords(hardWords);
+      setHardWords(hardWords);
       setLoadAnimation(false);
     } catch (e) {
       setLoadAnimation(false);
@@ -55,7 +53,7 @@ const Textbook = () => {
     }
   };
 
-  const playAudioHandler = (...args) => {
+  const playAudioHandler = async (...args) => {
     if (args.length === 0) {
       setIsPlaying(false);
       return;
@@ -63,12 +61,26 @@ const Textbook = () => {
     const audioEndPoints = args;
     const audioPath = `${CONSTANTS.baseUrl}${audioEndPoints[0]}`;
     const audio = new Audio(audioPath);
-    audio.play();
+    await audio.play();
     audio.onended = () => {
       audioEndPoints.shift();
       playAudioHandler(...audioEndPoints);
     };
   };
+
+  useEffect(async () => {
+    if (!localStorage.getItem('currentPage')) {
+      localStorage.setItem('currentPage', '0');
+      localStorage.setItem('textbookShowTranslation', 'true');
+      localStorage.setItem('textbookGroup', '0');
+    }
+
+    await getComplicatedWords();
+
+    Number(localStorage.getItem('textbookGroup')) === 6
+      ? await loadUserHardWords()
+      : await loadWords();
+  }, []);
 
   return (
     <div className={s.textbook}>
@@ -94,6 +106,7 @@ const Textbook = () => {
                     playAudio={playAudioHandler}
                     isPlaying={isPlaying}
                     setIsPlaying={setIsPlaying}
+                    hardWordsId={hardWordsId}
                   />
                 ))
               )}

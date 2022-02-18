@@ -1,12 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import s from './TextbookCard.module.scss';
 import CONSTANTS from '../../../constants/constants.js';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../../index';
 import { createUserWord } from '../../../API/textbookAPI';
 
-const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying }) => {
+const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying, hardWordsId }) => {
   const { rootStore } = useContext(Context);
+  const [highlightHardWord, setHighlightHardWord] = useState(false);
+  /*const [highlightLearnedWord, setHighlightLearnedWord] = useState(false);*/
 
   const markWord = async (status) => {
     try {
@@ -35,7 +37,12 @@ const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying }) => {
   };
 
   return (
-    <div className={s.card} key={pos}>
+    <div
+      className={
+        hardWordsId.includes(card.id) || highlightHardWord ? [s.card, s.hardWord].join(' ') : s.card
+      }
+      key={pos}
+    >
       <div className={s.imgWrapper}>
         <div className={s.img} style={{ background: `url(${CONSTANTS.baseUrl}${card.image})` }} />
       </div>
@@ -74,6 +81,7 @@ const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying }) => {
       </div>
       <div className={s.cardIcons}>
         <div
+          title="Воспроизвести предложение"
           className={[s.playWordIcon, s.cardIcon].join(' ')}
           onClick={async () => {
             if (!isPlaying) {
@@ -94,6 +102,7 @@ const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying }) => {
           <div
             className={[s.complicatedWordIcon, s.cardIcon].join(' ')}
             onClick={async () => {
+              setHighlightHardWord(true);
               await markWord(CONSTANTS.wordStatus.hard);
             }}
           />
