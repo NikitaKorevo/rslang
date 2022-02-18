@@ -3,7 +3,7 @@ import './AudioCallProgress.scss';
 import { Button } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { getRandomNumber, shuffleArray } from '../../../utils/utils';
-import { CONSTANTS } from '../../../constants/constants';
+import CONSTANTS from '../../../constants/constants';
 import audioCall from '../../../store/audioCall';
 import AudioCallResult from '../AudioCallResult/AudioCallResult';
 

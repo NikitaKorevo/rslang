@@ -2,7 +2,7 @@ import React from 'react';
 import './AudioCallResult.scss';
 import propTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
-import { CONSTANTS } from '../../../constants/constants';
+import CONSTANTS from '../../../constants/constants';
 import audioCall from '../../../store/audioCall';
 
 function AudioCallResult(props) {
