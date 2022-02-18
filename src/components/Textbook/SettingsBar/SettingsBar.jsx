@@ -1,34 +1,89 @@
 import React, { useContext } from 'react';
 import s from './SettingsBar.module.scss';
-import { Dropdown, Form } from 'react-bootstrap';
+import { Button, Dropdown, Form } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../../index';
 
-const SettingsBar = observer(({ loadWords }) => {
+const SettingsBar = observer(({ loadWords, loadHardWords }) => {
   const { rootStore } = useContext(Context);
-  const changeChapter = async (num) => {
+  const changeSection = async (num) => {
     rootStore.textbookStore.setTextbookGroup(num);
-    await loadWords();
+    Number(localStorage.getItem('textbookGroup')) === 6 ? await loadHardWords() : await loadWords();
   };
 
   return (
     <div className={s.settingsBar}>
       <Dropdown>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
-          Раздел {rootStore.textbookStore.textbookGroup + 1}
+        <Dropdown.Toggle variant="warning" id="dropdown-basic">
+          {localStorage.getItem('groupName')}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <Dropdown.Item onClick={async () => await changeChapter(0)}>Раздел 1</Dropdown.Item>
-          <Dropdown.Item onClick={async () => await changeChapter(1)}>Раздел 2</Dropdown.Item>
-          <Dropdown.Item onClick={async () => await changeChapter(2)}>Раздел 3</Dropdown.Item>
-          <Dropdown.Item onClick={async () => await changeChapter(3)}>Раздел 4</Dropdown.Item>
-          <Dropdown.Item onClick={async () => await changeChapter(4)}>Раздел 5</Dropdown.Item>
-          <Dropdown.Item onClick={async () => await changeChapter(5)}>Раздел 6</Dropdown.Item>
-          <Dropdown.Item onClick={async () => await changeChapter(6)}>Раздел 7</Dropdown.Item>
+          <Dropdown.Item
+            onClick={async () => {
+              await changeSection(0);
+              localStorage.setItem('groupName', 'A1');
+            }}
+          >
+            A1
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={async () => {
+              await changeSection(1);
+              localStorage.setItem('groupName', 'A2');
+            }}
+          >
+            A2
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={async () => {
+              await changeSection(2);
+              localStorage.setItem('groupName', 'B1');
+            }}
+          >
+            B1
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={async () => {
+              await changeSection(3);
+              localStorage.setItem('groupName', 'B2');
+            }}
+          >
+            B2
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={async () => {
+              await changeSection(4);
+              localStorage.setItem('groupName', 'C1');
+            }}
+          >
+            C1
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={async () => {
+              await changeSection(5);
+              localStorage.setItem('groupName', 'C2');
+            }}
+          >
+            C2
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={async () => {
+              await changeSection(6);
+              localStorage.setItem('groupName', 'Сложные слова');
+            }}
+          >
+            Сложные слова
+          </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
+      <Button variant="warning" className={s.menuItem}>
+        Аудиовызов
+      </Button>
+      <Button variant="warning" className={s.menuItem}>
+        Спринт
+      </Button>
       <Dropdown className={s.settingsDropdown}>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
+        <Dropdown.Toggle variant="warning" id="dropdown-basic">
           Настройки
         </Dropdown.Toggle>
         <Dropdown.Menu className={s.dropdownMenu}>

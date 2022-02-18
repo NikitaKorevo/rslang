@@ -61,6 +61,7 @@ class AuthStore {
     const refreshToken = userInfo.refreshToken;
     const userId = userInfo.userId;
     console.log(userId, refreshToken);
+
     try {
       const resp = await AuthAPI.getTokens(userId, refreshToken);
       const updatedUserData = {
