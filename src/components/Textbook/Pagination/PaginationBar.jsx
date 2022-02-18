@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Pagination } from 'react-bootstrap';
-import s from '../../pages/Textbook/Textbook.module.scss';
-import CONSTANTS from '../../constants/constants';
-import { Context } from '../../index';
+import s from './Paginationbar.module.scss';
+import CONSTANTS from '../../../constants/constants';
+import { Context } from '../../../index';
 
 const PaginationBar = ({ loadWords }) => {
   const { rootStore } = useContext(Context);
@@ -15,7 +15,7 @@ const PaginationBar = ({ loadWords }) => {
             await loadWords();
           }}
           className={
-            rootStore.textbookStore.currentTextbookPage === CONSTANTS.firstTextBookPage
+            Number(localStorage.getItem('currentPage')) === CONSTANTS.firstTextBookPage
               ? 'disabled'
               : null
           }
@@ -26,19 +26,20 @@ const PaginationBar = ({ loadWords }) => {
             await loadWords();
           }}
           className={
-            rootStore.textbookStore.currentTextbookPage === CONSTANTS.firstTextBookPage
+            Number(localStorage.getItem('currentPage')) === CONSTANTS.firstTextBookPage
               ? 'disabled'
               : null
           }
         />
-        <Pagination.Item>{rootStore.textbookStore.currentTextbookPage + 1}</Pagination.Item>
+        <Pagination.Item>{Number(localStorage.getItem('currentPage')) + 1}</Pagination.Item>
         <Pagination.Next
           onClick={async () => {
             rootStore.textbookStore.setNextPage();
             await loadWords();
           }}
           className={
-            rootStore.textbookStore.currentTextbookPage === CONSTANTS.textBookPagesAmount
+            Number(localStorage.getItem('currentPage')) === CONSTANTS.textBookPagesAmount ||
+            Number(localStorage.getItem('textbookGroup')) === 6
               ? 'disabled'
               : null
           }
@@ -49,7 +50,8 @@ const PaginationBar = ({ loadWords }) => {
             await loadWords();
           }}
           className={
-            rootStore.textbookStore.currentTextbookPage === CONSTANTS.textBookPagesAmount
+            Number(localStorage.getItem('currentPage')) === CONSTANTS.textBookPagesAmount ||
+            Number(localStorage.getItem('textbookGroup')) === 6
               ? 'disabled'
               : null
           }

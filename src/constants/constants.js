@@ -7,7 +7,11 @@ const CONSTANTS = {
   },
   textBookPagesAmount: 29,
   firstTextBookPage: 0,
-  firstTextBookGroup: 0
+  firstTextBookGroup: 0,
+  wordStatus: {
+    hard: 'hard',
+    learned: 'learned'
+  }
 };
 
 export default CONSTANTS;

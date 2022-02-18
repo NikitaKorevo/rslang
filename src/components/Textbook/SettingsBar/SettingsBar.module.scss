@@ -8,10 +8,15 @@
     transform: scale(1.05);
   }
 }
+
+.menuItem {
+  margin-left: 10px;
+}
 .settingsBar {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  margin-top: 20px;
 }
 
 .settingsDropdown {
