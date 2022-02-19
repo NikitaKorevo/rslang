@@ -4,9 +4,9 @@ import './Sprint.css';
 
 function Sprint() {
   return ( <div className="sprint">
-      <SprintStart />
-    </div>
-  );
+            <SprintStart />
+           </div>
+         );
 }
 
 export default Sprint;
