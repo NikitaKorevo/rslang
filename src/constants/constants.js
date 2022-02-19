@@ -11,6 +11,18 @@ const CONSTANTS = {
   wordStatus: {
     hard: 'hard',
     learned: 'learned'
+  },
+  word: {
+    difficulty: "1",
+    optional: {
+      progress: {
+        totalGames: 0,
+        wins: 0,
+        failed: 0,
+        leftUntil: 0
+      },
+      status: 'new'
+    }
   }
 };
 

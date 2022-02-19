@@ -1,0 +1,59 @@
+.select-level-sprint {
+    min-width: 50%;
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.select-level-sprint-container {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.select-level-sprint-container h3 {
+    font: 26px Helvetica, Arial, sans-serif;
+    color:rgb(56, 58, 58);
+}
+
+.select-level-sprint-buttons {
+    max-width: 500px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.select-level-sprint-buttons button {
+    min-width: 70px;
+    min-height: 30px;
+    color: #fff;
+    font: 18px Helvetica, Arial, sans-serif;   
+    border: none;
+}
+
+.select-sprint-1 {
+    background-color:teal;
+}
+
+.select-level-sprint-buttons button:hover {background-image: linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));}
+
+.select-sprint-2 {
+    background-color:rgb(2, 90, 6);
+}
+.select-sprint-3 {
+    background-color:rgb(177, 204, 23);
+}
+.select-sprint-4 {
+    background-color:rgb(233, 140, 18);
+}
+.select-sprint-5 {
+    background-color:rgb(243, 13, 13);
+}
+.select-sprint-6 {
+    background-color:rgb(56, 58, 58);
+}

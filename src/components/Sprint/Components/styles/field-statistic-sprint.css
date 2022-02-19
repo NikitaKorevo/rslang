@@ -1,0 +1,124 @@
+.field-statistic-sprint {
+    width: 400px;
+    height: 400px;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow-y: scroll;
+    padding: 10px;
+}
+
+.field-statistic-sprint h3 {
+    font: 26px Helvetica, Arial, sans-serif;
+    color:rgb(158, 155, 155);
+}
+
+.answer-statistic-sprint {
+    width: 100%;
+}
+.correct-answer-statistic-sprint {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    gap: 3px;
+    margin-bottom: 3px;
+}
+
+.incorrect-answer-statistic-sprint {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    gap: 3px;
+    margin-bottom: 3px;
+}
+.word-statistic-sprint {
+    /* border: 2px solid rgb(76, 238, 103); */
+    width: 180px;
+    display: flex;
+    align-items: center;
+    padding-left: 3px;
+    font: 16px Helvetica, Arial, sans-serif;
+    color:rgb(49, 179, 82);
+    font-weight: 700;
+}
+
+.translate-statistic-sprint {
+    /* border: 2px solid rgb(76, 238, 103); */
+    width: 180px;
+    display: flex;
+    align-items: center;
+    padding-left: 3px;
+    font: 16px Helvetica, Arial, sans-serif;
+    color:rgb(49, 179, 82);
+}
+
+.word-instatistic-sprint {
+    /* border: 2px solid rgb(230, 39, 39); */
+    width: 180px;
+    display: flex;
+    align-items: center;
+    padding-left: 3px;
+    font: 16px Helvetica, Arial, sans-serif;
+    color:rgb(201, 60, 60);
+    font-weight: 700;
+}
+
+.translate-instatistic-sprint {
+    /* border: 2px solid rgb(230, 39, 39); */
+    width: 180px;
+    display: flex;
+    align-items: center;
+    padding-left: 3px;
+    font: 16px Helvetica, Arial, sans-serif;
+    color:rgb(201, 60, 60);
+}
+
+.sound-statistic-sprint {
+   width: 30px;
+   height: 30px;
+   border: none;
+   background-color: #fff;
+}
+
+.sound-statistic-sprint img:hover{
+    transition: filter 0.3s linear;
+    filter: brightness(2) grayscale(1) opacity(0.5);
+}
+
+.sound-instatistic-sprint {
+    width: 30px;
+    height: 30px;
+    border: none;
+ }
+
+ .buttons-statistic-sprint {
+    width: 100%; 
+    display: flex;
+    margin-top: 15px;
+    justify-content: center;
+    gap: 20px;
+ }
+ 
+.game-again-sprint {
+     border: none;
+     background-color:#fff;
+     color:rgb(14, 238, 44);
+     font-size: 45px;
+     font-weight: 700;
+ }
+
+.game-again-sprint:hover {color: rgb(0, 192, 26);}
+
+.game-exit-sprint {
+
+    text-decoration:none;
+    border: none;
+    background-color:#fff;
+    color:rgb(238, 14, 14);
+    font-size: 45px;
+    font-weight: 700;
+ }
+.game-exit-sprint:hover {
+    text-decoration:none;
+    color: rgb(199, 1, 1);
+    cursor: pointer;
+}
