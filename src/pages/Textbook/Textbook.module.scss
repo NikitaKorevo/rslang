@@ -1,0 +1,48 @@
+.textbook {
+  padding: 0 20px;
+  h4 {
+    padding: 10px;
+  }
+}
+
+
+.dropdown {
+  background-color: #02a7a7;
+}
+
+.pagination {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.loadingIcon {
+  min-height: calc(100vh - 50px - 50px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.spinner {
+  height: 100px;
+  width: 100px;
+}
+
+h4 {
+  margin: 0;
+}
+
+.page-link {
+  color:teal;
+}
+
+.cards {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+

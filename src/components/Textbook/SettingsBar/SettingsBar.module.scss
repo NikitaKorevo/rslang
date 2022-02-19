@@ -1,0 +1,32 @@
+.settingsIcon {
+  background: url("../../../assets/svg/settings-icon.svg");
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  margin-right: 10px;
+  &:active {
+    transform: scale(1.05);
+  }
+}
+
+.menuItem {
+  margin-left: 10px;
+}
+.settingsBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.settingsDropdown {
+  margin-left: 10px;
+  min-width: 12rem;
+  label {
+    margin-left: 5px;
+  }
+}
+
+.dropdownMenu {
+  padding:10px;
+}

@@ -1,0 +1,8 @@
+.AudioCall {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 30px);
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: calc(100vh - 50px - 50px);
+}
