@@ -16,7 +16,7 @@ export const createUserWord = async (wordId, word) => {
         body: JSON.stringify(word)
     });
     if (response.status == 401) {
-      new AuthStore().updateTokens();        
+      await new AuthStore().updateTokens();        
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const {userId, token, refreshToken} = userInfo;
       response = await fetch(`${baseUrl}/users/${userId}/words`, {
@@ -48,7 +48,7 @@ export const updateUserWord = async (wordId, word) => {
           body: JSON.stringify(word)
       });
       if (response.status == 401) {
-            new AuthStore().updateTokens();        
+            await new AuthStore().updateTokens();        
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const {userId, token, refreshToken} = userInfo;
             response = await fetch(`${baseUrl}/users/${userId}/words`, {
@@ -80,7 +80,7 @@ export const getUserWords = async () => {
         }
       });
       if (response.status == 401 || response.status == 402) {
-        new AuthStore().updateTokens();        
+        await new AuthStore().updateTokens();        
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const {userId, token, refreshToken} = userInfo;
         response = await fetch(`${baseUrl}/users/${userId}/words`, {
@@ -149,7 +149,7 @@ export const getUserWord = async (wordId) => {
             }
           });
           if (response.status == 401) {
-            new AuthStore().updateTokens();        
+            await new AuthStore().updateTokens();        
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const {userId, token, refreshToken} = userInfo;
             response = await fetch(`${baseUrl}/users/${userId}/words/${wordId}`, {
