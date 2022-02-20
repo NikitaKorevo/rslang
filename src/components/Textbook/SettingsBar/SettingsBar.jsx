@@ -3,6 +3,9 @@ import s from './SettingsBar.module.scss';
 import { Button, Dropdown, Form } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../../index';
+import { NavLink, Link } from 'react-router-dom';
+import ROUTES from '../../../constants/routes';
+
 
 const SettingsBar = observer(({ loadWords, loadHardWords }) => {
   const { rootStore } = useContext(Context);
@@ -80,7 +83,14 @@ const SettingsBar = observer(({ loadWords, loadHardWords }) => {
         Аудиовызов
       </Button>
       <Button variant="warning" className={s.menuItem}>
+      <Link style={{display : 'block', width: '100%', height: '100%', textDecoration: 'none', color: '#000'}} to={{
+         pathname: '/sprint',
+         search: '',
+         hash: 'fromTextbook',
+         something: {fromTextBook:1}
+      }}>
         Спринт
+      </Link>
       </Button>
       <Dropdown className={s.settingsDropdown}>
         <Dropdown.Toggle variant="warning" id="dropdown-basic">

@@ -92,51 +92,54 @@ export const getUserWords = async () => {
           }
         });
       }
-      const data = await response.json();
-      return data;
+      if(response.status == 200) {
+            const data = await response.json();
+            return data;            
+      }
+      return false;
+};
+
+export const isUserWord = async (wordId) => {
+      let res = false;
+      let response;
+            response = await fetch(`${baseUrl}/users/${userId}/words/${wordId}`, {
+                  method: 'GET',
+                  withCredentials: true,
+                  headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json',
+                  }
+                });    
+          if (response.status == 401) {
+            await new AuthStore().updateTokens();        
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const {userId, token, refreshToken} = userInfo;
+            response = await fetch(`${baseUrl}/users/${userId}/words/${wordId}`, {
+              method: 'GET',
+              withCredentials: true,
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+              }
+            });
+          }
+          if(response.status == 200) {
+                res = true; 
+          } else if(response.status == 404) {
+                res = false;
+          } else {
+                res = -1;
+          }
+      return res;
 };
 
 // export const isUserWord = async (wordId) => {
-//       let res = false;
-//       let response;
-//             response = await fetch(`${baseUrl}/users/${userId}/words/${wordId}`, {
-//                   method: 'GET',
-//                   withCredentials: true,
-//                   headers: {
-//                     'Authorization': `Bearer ${token}`,
-//                     'Accept': 'application/json',
-//                   }
-//                 });    
-//           if (response.status == 401) {
-//             await new AuthStore().updateTokens();        
-//             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-//             const {userId, token, refreshToken} = userInfo;
-//             response = await fetch(`${baseUrl}/users/${userId}/words/${wordId}`, {
-//               method: 'GET',
-//               withCredentials: true,
-//               headers: {
-//                 'Authorization': `Bearer ${token}`,
-//                 'Accept': 'application/json',
-//               }
-//             });
-//           }
-//           if(response.status == 200) {
-//                 res = true; 
-//           } else if(response.status == 404) {
-//                 res = false;
-//           } else {
-//                 res = -1;
-//           }
-//       return res;
+//       const data = await getUserWords();
+//       const res = data.findIndex((item) => {
+//            return item.wordId === wordId;
+//       });
+//       return (res === -1) ? false : true;
 // };
-
-export const isUserWord = async (wordId) => {
-      const data = await getUserWords();
-      const res = data.findIndex((item) => {
-           return item.wordId === wordId;
-      });
-      return (res === -1) ? false : true;
-};
 
 export const getUserWord = async (wordId) => {
       let response = await fetch(`${baseUrl}/users/${userId}/words/${wordId}`, {
@@ -163,7 +166,7 @@ export const getUserWord = async (wordId) => {
           if (response.status == 200) {
             const data = await response.json();
             return data;
-          } else if(response.status == 404) {
+          } else if (response.status == 404) {
                 return false;
           }
     };
