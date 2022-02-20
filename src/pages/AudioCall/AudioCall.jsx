@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './AudioCall.scss';
+import { observer } from 'mobx-react-lite';
+import AudioCallHeadband from '../../components/AudioCall/AudioCallHeadband/AudioCallHeadband';
+import AudioCallProgress from '../../components/AudioCall/AudioCallProgress/AudioCallProgress';
 
-function AudioCall() {
+const AudioCall = observer(() => {
+  const [isGameInProgress, setIsGameInProgress] = useState(false);
+
   return (
     <div className="AudioCall">
-      <div>Аудиовызов</div>
+      {isGameInProgress ? (
+        <AudioCallProgress />
+      ) : (
+        <AudioCallHeadband setIsGameInProgress={setIsGameInProgress} />
+      )}
     </div>
   );
-}
+});
 
 export default AudioCall;
