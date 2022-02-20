@@ -160,9 +160,12 @@ export const getUserWord = async (wordId) => {
               }
             });
           }
-
-      const data = await response.json();
-      return data;
+          if (response.status == 200) {
+            const data = await response.json();
+            return data;
+          } else if(response.status == 404) {
+                return false;
+          }
     };
 
 export const changeStatusWord = async(wordId, newStatusWord) => {
