@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import s from './Textbook.module.scss';
-import { getUserHardWords, getWords } from '../../API/textbookAPI';
+import { getUserWords, getWords } from '../../API/textbookAPI';
 import CONSTANTS from '../../constants/constants';
 import TextbookCard from '../../components/Textbook/TextbookCard/TextbookCard';
 import PaginationBar from '../../components/Textbook/Pagination/PaginationBar';
@@ -12,28 +12,26 @@ const Textbook = () => {
   const [loadAnimation, setLoadAnimation] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hardWordsId, setHardWordsId] = useState([]);
+  const [learnedWordsId, setLearnedWordsId] = useState([]);
 
-  const getComplicatedWords = async () => {
+  const setUserWordsList = async () => {
     try {
-      const data = await getUserHardWords();
-      const hardWordsIdList = data.data[0].paginatedResults.map((el) => el._id);
+      const data = await getUserWords();
+
+      const hardWords = data.data[0].paginatedResults.filter(
+        (el) => el.userWord.optional.status === 'hard'
+      );
+      const learnedWords = data.data[0].paginatedResults.filter(
+        (el) => el.userWord.optional.status === 'learned'
+      );
+
+      const hardWordsIdList = hardWords.map((el) => el._id);
+      const learnedWordsIdList = learnedWords.map((el) => el._id);
+
       setHardWordsId(hardWordsIdList);
+      setLearnedWordsId(learnedWordsIdList);
     } catch (e) {
       console.log(e);
-    }
-  };
-
-  const loadUserHardWords = async () => {
-    try {
-      setLoadAnimation(true);
-      const data = await getUserHardWords();
-      console.log(data.data[0].paginatedResults);
-      const hardWords = data.data[0].paginatedResults;
-      updateWords(hardWords);
-      setHardWords(hardWords);
-      setLoadAnimation(false);
-    } catch (e) {
-      setLoadAnimation(false);
     }
   };
 
@@ -48,6 +46,21 @@ const Textbook = () => {
       updateWords(data.data);
       setLoadAnimation(false);
       console.log(data.data);
+    } catch (e) {
+      setLoadAnimation(false);
+    }
+  };
+
+  const loadHardWords = async () => {
+    try {
+      setLoadAnimation(true);
+      const data = await getUserWords();
+      const hardWords = data.data[0].paginatedResults.filter(
+        (el) => el.userWord.optional.status === 'hard'
+      );
+      updateWords(hardWords);
+      setHardWordsId(hardWords);
+      setLoadAnimation(false);
     } catch (e) {
       setLoadAnimation(false);
     }
@@ -75,11 +88,9 @@ const Textbook = () => {
       localStorage.setItem('textbookGroup', '0');
     }
 
-    await getComplicatedWords();
+    await setUserWordsList();
 
-    Number(localStorage.getItem('textbookGroup')) === 6
-      ? await loadUserHardWords()
-      : await loadWords();
+    Number(localStorage.getItem('textbookGroup')) === 6 ? await loadHardWords() : await loadWords();
   }, []);
 
   return (
@@ -93,8 +104,12 @@ const Textbook = () => {
           </div>
         ) : (
           <div>
-            <SettingsBar loadWords={loadWords} loadHardWords={loadUserHardWords} />
-            <PaginationBar loadWords={loadWords} />
+            <SettingsBar
+              loadWords={loadWords}
+              loadHardWords={loadHardWords}
+              setUserWordsList={setUserWordsList}
+            />
+            <PaginationBar loadWords={loadWords} setUserWordsList={setUserWordsList} />
             <div className={s.cards}>
               {words.length === 0 ? (
                 <div>Сложных слов не обнаружено...</div>
@@ -107,6 +122,7 @@ const Textbook = () => {
                     isPlaying={isPlaying}
                     setIsPlaying={setIsPlaying}
                     hardWordsId={hardWordsId}
+                    learnedWordsId={learnedWordsId}
                   />
                 ))
               )}

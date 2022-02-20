@@ -5,10 +5,18 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../../index';
 import { createUserWord } from '../../../API/textbookAPI';
 
-const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying, hardWordsId }) => {
+const TextbookCard = ({
+  card,
+  pos,
+  playAudio,
+  isPlaying,
+  setIsPlaying,
+  hardWordsId,
+  learnedWordsId
+}) => {
   const { rootStore } = useContext(Context);
   const [highlightHardWord, setHighlightHardWord] = useState(false);
-  /*const [highlightLearnedWord, setHighlightLearnedWord] = useState(false);*/
+  const [highlightLearnedWord, setHighlightLearnedWord] = useState(false);
 
   const markWord = async (status) => {
     try {
@@ -39,7 +47,11 @@ const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying, hardWords
   return (
     <div
       className={
-        hardWordsId.includes(card.id) || highlightHardWord ? [s.card, s.hardWord].join(' ') : s.card
+        hardWordsId.includes(card.id) || highlightHardWord
+          ? [s.card, s.hardWord].join(' ')
+          : learnedWordsId.includes(card.id) || highlightLearnedWord
+          ? [s.card, s.learnedWord].join(' ')
+          : s.card
       }
       key={pos}
     >
@@ -90,11 +102,13 @@ const TextbookCard = ({ card, pos, playAudio, isPlaying, setIsPlaying, hardWords
             }
           }}
         />
-        {rootStore.authStore.isAuth ? (
+        {rootStore.authStore.isAuth &&
+        Number(localStorage.getItem('textbookGroup')) === 6 ? null : rootStore.authStore.isAuth ? (
           <div
             className={[s.learnedWordIcon, s.cardIcon].join(' ')}
             onClick={async () => {
               await markWord(CONSTANTS.wordStatus.learned);
+              setHighlightLearnedWord(true);
             }}
           />
         ) : null}

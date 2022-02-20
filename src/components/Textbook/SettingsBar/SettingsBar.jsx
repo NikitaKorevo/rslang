@@ -3,12 +3,15 @@ import s from './SettingsBar.module.scss';
 import { Button, Dropdown, Form } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../../index';
+import ROUTES from '../../../constants/routes';
+import { NavLink } from 'react-router-dom';
 
-const SettingsBar = observer(({ loadWords, loadHardWords }) => {
+const SettingsBar = observer(({ loadWords, loadHardWords, setUserWordsList }) => {
   const { rootStore } = useContext(Context);
   const changeSection = async (num) => {
     rootStore.textbookStore.setTextbookGroup(num);
     Number(localStorage.getItem('textbookGroup')) === 6 ? await loadHardWords() : await loadWords();
+    setUserWordsList();
   };
 
   const setCurrentGroupName = (pageNum) => {
@@ -91,10 +94,14 @@ const SettingsBar = observer(({ loadWords, loadHardWords }) => {
         </Dropdown.Menu>
       </Dropdown>
       <Button variant="warning" className={s.menuItem}>
-        Аудиовызов
+        <NavLink className="nav__link" to={ROUTES.AUDIO_CALL}>
+          Аудиовызов
+        </NavLink>
       </Button>
       <Button variant="warning" className={s.menuItem}>
-        Спринт
+        <NavLink className="nav__link" to={ROUTES.SPRINT}>
+          Спринт
+        </NavLink>
       </Button>
       <Dropdown className={s.settingsDropdown}>
         <Dropdown.Toggle variant="warning" id="dropdown-basic">

@@ -33,7 +33,9 @@ const PaginationBar = ({ loadWords }) => {
           }
         />
         <Pagination.Item className={s.currentPage}>
-          {Number(localStorage.getItem('currentPage')) + 1}
+          {Number(localStorage.getItem('textbookGroup')) === 6
+            ? 1
+            : Number(localStorage.getItem('currentPage')) + 1}
         </Pagination.Item>
         <Pagination.Next
           onClick={async () => {
