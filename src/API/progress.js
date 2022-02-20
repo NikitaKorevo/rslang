@@ -92,6 +92,7 @@ export const getUserWords = async () => {
           }
         });
       }
+
       if(response.status == 200) {
             const data = await response.json();
             return data;            
