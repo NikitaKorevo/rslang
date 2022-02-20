@@ -1,33 +1,51 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import s from './Textbook.module.scss';
-import { getWords } from '../../API/textbookAPI';
+import { getUserHardWords, getWords } from '../../API/textbookAPI';
 import CONSTANTS from '../../constants/constants';
 import TextbookCard from '../../components/Textbook/TextbookCard/TextbookCard';
-import PaginationBar from '../../components/Pagination/PaginationBar';
+import PaginationBar from '../../components/Textbook/Pagination/PaginationBar';
 import SettingsBar from '../../components/Textbook/SettingsBar/SettingsBar';
-import { Context } from '../../index';
 
 const Textbook = () => {
-  const { rootStore } = useContext(Context);
-
   const [words, updateWords] = useState([]);
   const [loadAnimation, setLoadAnimation] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await loadWords();
-    };
-    fetchData();
+  useEffect(async () => {
+    if (!localStorage.getItem('currentPage')) {
+      localStorage.setItem('currentPage', '0');
+      localStorage.setItem('textbookShowTranslation', 'true');
+      localStorage.setItem('textbookGroup', '0');
+    }
+
+    await loadUserHardWords();
+
+    Number(localStorage.getItem('textbookGroup')) === 6
+      ? await loadUserHardWords()
+      : await loadWords();
   }, []);
+
+  const loadUserHardWords = async () => {
+    try {
+      setLoadAnimation(true);
+      const data = await getUserHardWords();
+      console.log(data.data[0].paginatedResults);
+      const hardWords = data.data[0].paginatedResults;
+      updateWords(hardWords);
+      setLoadAnimation(false);
+    } catch (e) {
+      setLoadAnimation(false);
+    }
+  };
 
   const loadWords = async () => {
     try {
       setLoadAnimation(true);
+
       const data = await getWords(
-        rootStore.textbookStore.textbookGroup,
-        rootStore.textbookStore.currentTextbookPage
+        Number(localStorage.getItem('textbookGroup')),
+        Number(localStorage.getItem('currentPage'))
       );
       updateWords(data.data);
       setLoadAnimation(false);
@@ -63,17 +81,16 @@ const Textbook = () => {
           </div>
         ) : (
           <div>
-            <h4>TextBook</h4>
-            <SettingsBar loadWords={loadWords} />
+            <SettingsBar loadWords={loadWords} loadHardWords={loadUserHardWords} />
             <PaginationBar loadWords={loadWords} />
             <div className={s.cards}>
               {words.length === 0 ? (
                 <div>Сложных слов не обнаружено...</div>
               ) : (
-                words.map((card, pos) => (
+                words.map((card, key) => (
                   <TextbookCard
                     card={card}
-                    pos={pos}
+                    pos={key}
                     playAudio={playAudioHandler}
                     isPlaying={isPlaying}
                     setIsPlaying={setIsPlaying}

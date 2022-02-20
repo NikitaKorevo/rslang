@@ -1,12 +1,12 @@
 import React from 'react';
-import './Sprint.scss';
+import { SprintStart } from '../../components/Sprint/SprintStart';
+import './Sprint.css';
 
 function Sprint() {
-  return (
-    <div className="Sprint">
-      <div>Спринт</div>
-    </div>
-  );
+  return ( <div className="sprint">
+            <SprintStart />
+           </div>
+         );
 }
 
 export default Sprint;
