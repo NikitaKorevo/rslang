@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import s from './Textbook.module.scss';
 import { getUserWords, getWords } from '../../API/textbookAPI';
@@ -6,6 +6,7 @@ import CONSTANTS from '../../constants/constants';
 import TextbookCard from '../../components/Textbook/TextbookCard/TextbookCard';
 import PaginationBar from '../../components/Textbook/Pagination/PaginationBar';
 import SettingsBar from '../../components/Textbook/SettingsBar/SettingsBar';
+import { Context } from '../../index';
 
 const Textbook = () => {
   const [words, updateWords] = useState([]);
@@ -13,6 +14,8 @@ const Textbook = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hardWordsId, setHardWordsId] = useState([]);
   const [learnedWordsId, setLearnedWordsId] = useState([]);
+
+  const { rootStore } = useContext(Context);
 
   const setUserWordsList = async () => {
     try {
@@ -31,7 +34,7 @@ const Textbook = () => {
       setHardWordsId(hardWordsIdList);
       setLearnedWordsId(learnedWordsIdList);
     } catch (e) {
-      console.log(e);
+      await rootStore.authStore.updateTokens();
     }
   };
 
@@ -123,6 +126,8 @@ const Textbook = () => {
                     setIsPlaying={setIsPlaying}
                     hardWordsId={hardWordsId}
                     learnedWordsId={learnedWordsId}
+                    setUserWordsList={setUserWordsList}
+                    loadHardWords={loadHardWords}
                   />
                 ))
               )}

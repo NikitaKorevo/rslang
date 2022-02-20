@@ -4,6 +4,7 @@ import CONSTANTS from '../../../constants/constants.js';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../../index';
 import { createUserWord } from '../../../API/textbookAPI';
+import * as textbookAPI from '../../../API/textbookAPI';
 
 const TextbookCard = ({
   card,
@@ -17,12 +18,14 @@ const TextbookCard = ({
   const { rootStore } = useContext(Context);
   const [highlightHardWord, setHighlightHardWord] = useState(false);
   const [highlightLearnedWord, setHighlightLearnedWord] = useState(false);
+  const [hideWord, setHideWord] = useState(false);
 
   const markWord = async (status) => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const userId = userInfo.userId;
       const wordId = card.id;
+      console.log(wordId);
       const word = {
         difficulty: 'hard',
         optional: { status: status, testFieldBoolean: true }
@@ -51,6 +54,8 @@ const TextbookCard = ({
           ? [s.card, s.hardWord].join(' ')
           : learnedWordsId.includes(card.id) || highlightLearnedWord
           ? [s.card, s.learnedWord].join(' ')
+          : hideWord
+          ? [s.card, s.hide].join(' ')
           : s.card
       }
       key={pos}
@@ -124,7 +129,8 @@ const TextbookCard = ({
           <div
             className={[s.deleteWordIcon, s.cardIcon].join(' ')}
             onClick={async () => {
-              alert('WORD DELETED!');
+              await textbookAPI.removeHardWord(card._id);
+              setHideWord(true);
             }}
           />
         ) : null}

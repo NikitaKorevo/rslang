@@ -51,3 +51,18 @@ export const getUserWords = async () => {
     }
   );
 };
+
+export const removeHardWord = async (wordId) => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const token = userInfo.token;
+  const userId = userInfo.userId;
+  return $api.delete(
+    `${CONSTANTS.endPoint.users}/${userId}/${CONSTANTS.endPoint.words}/${wordId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json'
+      }
+    }
+  );
+};
