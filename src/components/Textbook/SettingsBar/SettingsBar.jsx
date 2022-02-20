@@ -6,25 +6,45 @@ import { Context } from '../../../index';
 import { NavLink, Link } from 'react-router-dom';
 import ROUTES from '../../../constants/routes';
 
-
-const SettingsBar = observer(({ loadWords, loadHardWords }) => {
+const SettingsBar = observer(({ loadWords, loadHardWords, setUserWordsList }) => {
   const { rootStore } = useContext(Context);
   const changeSection = async (num) => {
     rootStore.textbookStore.setTextbookGroup(num);
     Number(localStorage.getItem('textbookGroup')) === 6 ? await loadHardWords() : await loadWords();
+    setUserWordsList();
+  };
+
+  const setCurrentGroupName = (pageNum) => {
+    switch (pageNum) {
+      case 0:
+        return 'A1';
+      case 1:
+        return 'A2';
+      case 2:
+        return 'B1';
+      case 3:
+        return 'B2';
+      case 4:
+        return 'C1';
+      case 5:
+        return 'C2';
+      case 6:
+        return 'Сложные слова';
+      default:
+        return 'A1';
+    }
   };
 
   return (
     <div className={s.settingsBar}>
       <Dropdown>
         <Dropdown.Toggle variant="warning" id="dropdown-basic">
-          {localStorage.getItem('groupName')}
+          {setCurrentGroupName(Number(localStorage.getItem('textbookGroup')))}
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item
             onClick={async () => {
               await changeSection(0);
-              localStorage.setItem('groupName', 'A1');
             }}
           >
             A1
@@ -32,7 +52,6 @@ const SettingsBar = observer(({ loadWords, loadHardWords }) => {
           <Dropdown.Item
             onClick={async () => {
               await changeSection(1);
-              localStorage.setItem('groupName', 'A2');
             }}
           >
             A2
@@ -40,7 +59,6 @@ const SettingsBar = observer(({ loadWords, loadHardWords }) => {
           <Dropdown.Item
             onClick={async () => {
               await changeSection(2);
-              localStorage.setItem('groupName', 'B1');
             }}
           >
             B1
@@ -48,7 +66,6 @@ const SettingsBar = observer(({ loadWords, loadHardWords }) => {
           <Dropdown.Item
             onClick={async () => {
               await changeSection(3);
-              localStorage.setItem('groupName', 'B2');
             }}
           >
             B2
@@ -56,7 +73,6 @@ const SettingsBar = observer(({ loadWords, loadHardWords }) => {
           <Dropdown.Item
             onClick={async () => {
               await changeSection(4);
-              localStorage.setItem('groupName', 'C1');
             }}
           >
             C1
@@ -64,7 +80,6 @@ const SettingsBar = observer(({ loadWords, loadHardWords }) => {
           <Dropdown.Item
             onClick={async () => {
               await changeSection(5);
-              localStorage.setItem('groupName', 'C2');
             }}
           >
             C2
@@ -72,7 +87,6 @@ const SettingsBar = observer(({ loadWords, loadHardWords }) => {
           <Dropdown.Item
             onClick={async () => {
               await changeSection(6);
-              localStorage.setItem('groupName', 'Сложные слова');
             }}
           >
             Сложные слова
@@ -80,9 +94,29 @@ const SettingsBar = observer(({ loadWords, loadHardWords }) => {
         </Dropdown.Menu>
       </Dropdown>
       <Button variant="warning" className={s.menuItem}>
-        Аудиовызов
+        <NavLink className="nav__link" to={ROUTES.AUDIO_CALL}>
+          Аудиовызов
+        </NavLink>
       </Button>
       <Button variant="warning" className={s.menuItem}>
+
+        <Link
+          style={{
+            display: 'block',
+            width: '100%',
+            height: '100%',
+            textDecoration: 'none',
+            color: '#000'
+          }}
+          to={{
+            pathname: '/sprint',
+            search: '',
+            hash: 'fromTextbook',
+            something: { fromTextBook: 1 }
+          }}
+        >
+          Спринт
+        </Link>
       <Link style={{display : 'block', width: '100%', height: '100%', textDecoration: 'none', color: '#000'}} to={{
          pathname: '/sprint',
          search: '',
@@ -91,6 +125,7 @@ const SettingsBar = observer(({ loadWords, loadHardWords }) => {
       }}>
         Спринт
       </Link>
+
       </Button>
       <Dropdown className={s.settingsDropdown}>
         <Dropdown.Toggle variant="warning" id="dropdown-basic">
