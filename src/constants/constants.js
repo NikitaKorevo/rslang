@@ -3,7 +3,8 @@ const CONSTANTS = {
   endPoint: {
     users: 'users',
     signIn: 'signin',
-    words: 'words'
+    words: 'words',
+    statistics: 'statistics'
   },
   textBookPagesAmount: 29,
   firstTextBookPage: 0,

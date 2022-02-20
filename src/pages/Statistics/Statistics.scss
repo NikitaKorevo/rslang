@@ -1,2 +1,24 @@
 .Statistics {
+  max-width: 1200px;
+  width: calc(100% - 30px);
+  margin: 0 auto;
+
+  .Statistics__title {
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+  }
+
+  .Statistics__game-statistic {
+    display: inline-block;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+
+    .game-statistic__list {
+    }
+
+    .game-statistic__item {
+    }
+  }
 }

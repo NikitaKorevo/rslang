@@ -6,6 +6,7 @@ import { getRandomNumber, shuffleArray } from '../../../utils/utils';
 import CONSTANTS from '../../../constants/constants';
 import audioCall from '../../../store/audioCall';
 import AudioCallResult from '../AudioCallResult/AudioCallResult';
+import UsersStatisticAPI from '../../../API/usersStatisticAPI';
 
 const AudioCallProgress = observer(() => {
   const amountPages = 30;
@@ -19,6 +20,8 @@ const AudioCallProgress = observer(() => {
   const [positionRightAnswer, setPositionRightAnswer] = useState(null);
   const [rightChoice, setRightChoice] = useState([]);
   const [wrongChoice, setWrongChoice] = useState([]);
+  const [longestWinningStreak, setLongestWinningStreak] = useState(0);
+  const [winningStreak, setWinningStreak] = useState(0);
   const [randomButtonValues, setRandomButtonValues] = useState([]);
   const [buttonStatus, setButtonStatus] = useState([
     'primary',
@@ -92,16 +95,39 @@ const AudioCallProgress = observer(() => {
     if (positionRightAnswer === buttonNumber) {
       buttonStatusCopy[buttonNumber] = 'success';
       setRightChoice([...rightChoice, currentQuestion]);
+
+      if (longestWinningStreak < winningStreak) {
+        setLongestWinningStreak(winningStreak);
+      }
+      setWinningStreak(winningStreak + 1);
     } else {
       if (buttonNumber !== null) buttonStatusCopy[buttonNumber] = 'danger';
       setWrongChoice([...wrongChoice, currentQuestion]);
       buttonStatusCopy[positionRightAnswer] = 'success';
+
+      if (longestWinningStreak < winningStreak) {
+        setLongestWinningStreak(winningStreak);
+      }
+      setWinningStreak(0);
     }
     setButtonStatus(buttonStatusCopy);
     setCurrentPressedButton(buttonNumber);
   }
 
   function showResult() {
+    console.log('rightChoice', rightChoice);
+    console.log('wrongChoice', wrongChoice);
+    console.log('longestWinningStreak', longestWinningStreak);
+    console.log('winningStreak', winningStreak);
+
+    const amountRightChoice = rightChoice.length;
+    const amountWrongChoice = wrongChoice.length;
+    UsersStatisticAPI.pushUserStatistic(
+      'audioCall',
+      amountRightChoice,
+      amountWrongChoice,
+      longestWinningStreak
+    );
     setIsGameFinished(true);
   }
 
