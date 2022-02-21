@@ -6,6 +6,7 @@ import { Context } from '../../../index';
 
 const PaginationBar = ({ loadWords }) => {
   const { rootStore } = useContext(Context);
+
   return (
     <div className={s.pagination}>
       <Pagination>
@@ -31,7 +32,11 @@ const PaginationBar = ({ loadWords }) => {
               : null
           }
         />
-        <Pagination.Item>{Number(localStorage.getItem('currentPage')) + 1}</Pagination.Item>
+        <Pagination.Item className={s.currentPage}>
+          {Number(localStorage.getItem('textbookGroup')) === 6
+            ? 1
+            : Number(localStorage.getItem('currentPage')) + 1}
+        </Pagination.Item>
         <Pagination.Next
           onClick={async () => {
             rootStore.textbookStore.setNextPage();

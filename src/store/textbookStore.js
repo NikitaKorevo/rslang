@@ -12,6 +12,11 @@ class TextbookStore {
 
   showTranslation = true;
 
+  userWords = [];
+  setUserWords(arr) {
+    this.userWords = arr;
+  }
+
   setShowTranslation(bool) {
     this.showTranslation = bool;
     localStorage.setItem('textbookShowTranslation', String(this.showTranslation));

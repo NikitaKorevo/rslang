@@ -12,13 +12,17 @@
   margin-right: 5px;
 }
 
+
+
 .card {
   display: flex;
   padding: 15px;
   border-radius: 10px;
   background-color: #efebeb;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
   width: 90%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  transition: 0.2s;
 
   .word {
     font-size: 22px;
@@ -44,6 +48,19 @@
   }
 }
 
+.learnedWord {
+  box-shadow: rgba(43, 43, 227, 0.25) 0 13px 27px -5px, rgb(23, 199, 178) 0px 8px 16px -8px;
+  transform: scale(0.95);
+}
+
+.hardWord {
+  box-shadow: rgba(43, 43, 227, 0.25) 0 13px 27px -5px, rgb(245, 1, 1) 0px 8px 16px -8px;
+}
+.hide {
+  display: none;
+  opacity: 0.5;
+}
+
 .cardIcon {
   width: 25px;
   height: 25px;
@@ -55,19 +72,19 @@
 }
 
 .playWordIcon {
-  background: url("../../../assets/svg/headphones-icon.svg") 0 0/cover no-repeat; ;
+  background: url("../../../assets/svg/headphones-icon.svg") 0 0/cover no-repeat;
 }
 
 .learnedWordIcon {
-  background: url("../../../assets/svg/learned-word-icon.svg") 0 0/cover no-repeat;;
+  background: url("../../../assets/svg/learned-word-icon.svg") 0 0/cover no-repeat;
 }
 
 .deleteWordIcon {
-  background: url("../../../assets/svg/delete-icon.svg") 0 0/cover no-repeat;;
+  background: url("../../../assets/svg/delete-icon.svg") 0 0/cover no-repeat;
 }
 
 .complicatedWordIcon {
-  background: url("../../../assets/svg/learnedWord-icon.svg") 0 0/cover no-repeat;;
+  background: url("../../../assets/svg/learnedWord-icon.svg") 0 0/cover no-repeat;
 }
 
 .cardIcons {
