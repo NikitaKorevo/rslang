@@ -99,7 +99,6 @@ const SettingsBar = observer(({ loadWords, loadHardWords, setUserWordsList }) =>
         </NavLink>
       </Button>
       <Button variant="warning" className={s.menuItem}>
-
         <Link
           style={{
             display: 'block',
@@ -117,15 +116,6 @@ const SettingsBar = observer(({ loadWords, loadHardWords, setUserWordsList }) =>
         >
           Спринт
         </Link>
-      <Link style={{display : 'block', width: '100%', height: '100%', textDecoration: 'none', color: '#000'}} to={{
-         pathname: '/sprint',
-         search: '',
-         hash: 'fromTextbook',
-         something: {fromTextBook:1}
-      }}>
-        Спринт
-      </Link>
-
       </Button>
       <Dropdown className={s.settingsDropdown}>
         <Dropdown.Toggle variant="warning" id="dropdown-basic">

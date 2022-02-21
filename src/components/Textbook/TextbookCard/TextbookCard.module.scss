@@ -49,11 +49,12 @@
 }
 
 .learnedWord {
-  box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px, rgb(28, 175, 111) 0px 8px 16px -8px;
+  box-shadow: rgba(43, 43, 227, 0.25) 0 13px 27px -5px, rgb(23, 199, 178) 0px 8px 16px -8px;
+  transform: scale(0.95);
 }
 
 .hardWord {
-  box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px, rgb(211, 5, 22) 0px 8px 16px -8px;
+  box-shadow: rgba(43, 43, 227, 0.25) 0 13px 27px -5px, rgb(245, 1, 1) 0px 8px 16px -8px;
 }
 .hide {
   display: none;

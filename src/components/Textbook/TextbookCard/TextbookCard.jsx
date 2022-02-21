@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../../index';
 import { createUserWord } from '../../../API/textbookAPI';
 import * as textbookAPI from '../../../API/textbookAPI';
+import { Tooltip } from '@mui/material';
 
 const TextbookCard = ({
   card,
@@ -97,42 +98,51 @@ const TextbookCard = ({
         )}
       </div>
       <div className={s.cardIcons}>
-        <div
-          title="Воспроизвести предложение"
-          className={[s.playWordIcon, s.cardIcon].join(' ')}
-          onClick={async () => {
-            if (!isPlaying) {
-              setIsPlaying(true);
-              await playAudio(card.audio, card.audioMeaning, card.audioExample);
-            }
-          }}
-        />
+        <Tooltip title="Воспроизвести предложение" placement="left">
+          <div
+            title="Воспроизвести предложение"
+            className={[s.playWordIcon, s.cardIcon].join(' ')}
+            onClick={async () => {
+              if (!isPlaying) {
+                setIsPlaying(true);
+                await playAudio(card.audio, card.audioMeaning, card.audioExample);
+              }
+            }}
+          />
+        </Tooltip>
+
         {rootStore.authStore.isAuth &&
         Number(localStorage.getItem('textbookGroup')) === 6 ? null : rootStore.authStore.isAuth ? (
-          <div
-            className={[s.learnedWordIcon, s.cardIcon].join(' ')}
-            onClick={async () => {
-              await markWord(CONSTANTS.wordStatus.learned);
-              setHighlightLearnedWord(true);
-            }}
-          />
+          <Tooltip placement="left" title="Добавить в изученные слова">
+            <div
+              className={[s.learnedWordIcon, s.cardIcon].join(' ')}
+              onClick={async () => {
+                await markWord(CONSTANTS.wordStatus.learned);
+                setHighlightLearnedWord(true);
+              }}
+            />
+          </Tooltip>
         ) : null}
         {rootStore.authStore.isAuth && Number(localStorage.getItem('textbookGroup')) !== 6 ? (
-          <div
-            className={[s.complicatedWordIcon, s.cardIcon].join(' ')}
-            onClick={async () => {
-              setHighlightHardWord(true);
-              await markWord(CONSTANTS.wordStatus.hard);
-            }}
-          />
+          <Tooltip title="Добавить в сложные слова" placement="left">
+            <div
+              className={[s.complicatedWordIcon, s.cardIcon].join(' ')}
+              onClick={async () => {
+                setHighlightHardWord(true);
+                await markWord(CONSTANTS.wordStatus.hard);
+              }}
+            />
+          </Tooltip>
         ) : rootStore.authStore.isAuth ? (
-          <div
-            className={[s.deleteWordIcon, s.cardIcon].join(' ')}
-            onClick={async () => {
-              await textbookAPI.removeHardWord(card._id);
-              setHideWord(true);
-            }}
-          />
+          <Tooltip title="Удалить слово" placement="left">
+            <div
+              className={[s.deleteWordIcon, s.cardIcon].join(' ')}
+              onClick={async () => {
+                await textbookAPI.removeHardWord(card._id);
+                setHideWord(true);
+              }}
+            />
+          </Tooltip>
         ) : null}
       </div>
     </div>
