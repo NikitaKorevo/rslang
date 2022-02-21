@@ -1,9 +1,9 @@
+import { NavLink, Link } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import { Button, Dropdown, Form } from 'react-bootstrap';
 import React, { useContext } from 'react';
 import s from './SettingsBar.module.scss';
-import { Button, Dropdown, Form } from 'react-bootstrap';
-import { observer } from 'mobx-react-lite';
 import { Context } from '../../../index';
-import { NavLink, Link } from 'react-router-dom';
 import ROUTES from '../../../constants/routes';
 
 const SettingsBar = observer(({ loadWords, loadHardWords, setUserWordsList }) => {
@@ -84,13 +84,15 @@ const SettingsBar = observer(({ loadWords, loadHardWords, setUserWordsList }) =>
           >
             C2
           </Dropdown.Item>
-          <Dropdown.Item
-            onClick={async () => {
-              await changeSection(6);
-            }}
-          >
-            Сложные слова
-          </Dropdown.Item>
+          {rootStore.authStore.isAuth ? (
+            <Dropdown.Item
+              onClick={async () => {
+                await changeSection(6);
+              }}
+            >
+              Сложные слова
+            </Dropdown.Item>
+          ) : null}
         </Dropdown.Menu>
       </Dropdown>
       <Button variant="warning" className={s.menuItem}>
