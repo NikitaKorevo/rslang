@@ -21,7 +21,7 @@ function App() {
   useEffect(() => {
     JSON.parse(localStorage.getItem('userInfo'))?.isAuth
       ? rootStore.authStore.setAuth(true)
-      : rootStore.authStore.setAuth(false);
+      : localStorage.setItem('userInfo', JSON.stringify(rootStore.authStore.guestData));
   });
 
   return (
