@@ -18,7 +18,6 @@ class UsersStatisticAPI {
           }
         }
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       const errorNumber = error.toString().slice(-3);
@@ -69,15 +68,16 @@ class UsersStatisticAPI {
 
   static EnumStatisticSection = {
     audioCall: 'audioCall',
-    sprint: 'sprint',
-    words: 'words'
+    sprint: 'sprint'
   };
 
-  static async pushUserStatistic(
+  static async updateUserStatistic(
     statisticSection,
     rightAnswersFromGame,
     wrongAnswersFromGame,
-    longestWinningStreakFromGame
+    longestWinningStreakFromGame,
+    amountNewWordsFromGame,
+    amountLearnedWordsFromGame
   ) {
     if (!UsersStatisticAPI.EnumStatisticSection[statisticSection]) {
       console.error('incorrect statistical section');
@@ -87,40 +87,75 @@ class UsersStatisticAPI {
     const optionalSection = {
       optional: allContent.optional
     };
-    console.log('optionalSection', optionalSection);
 
     const currentDate = getCurrentDate();
 
-    if (statisticSection === 'audioCall' || statisticSection === 'sprint') {
-      if (optionalSection.optional[statisticSection][currentDate]) {
-        console.log('1');
+    if (optionalSection.optional[statisticSection][currentDate]) {
+      const { rightAnswers, wrongAnswers, longestWinningStreak, amountNewWords } =
+        optionalSection.optional[statisticSection][currentDate];
 
-        const { rightAnswers, wrongAnswers, longestWinningStreak } =
-          optionalSection.optional[statisticSection][currentDate];
+      const compareLongestWinningStreak =
+        longestWinningStreak >= longestWinningStreakFromGame
+          ? longestWinningStreak
+          : longestWinningStreakFromGame;
 
-        const compareLongestWinningStreak =
-          longestWinningStreak >= longestWinningStreakFromGame
-            ? longestWinningStreak
-            : longestWinningStreakFromGame;
-
-        optionalSection.optional[statisticSection][currentDate] = {
-          rightAnswers: rightAnswers + rightAnswersFromGame,
-          wrongAnswers: wrongAnswers + wrongAnswersFromGame,
-          longestWinningStreak: compareLongestWinningStreak
-        };
-      } else {
-        /* add amountNewWords  */
-        console.log('2');
-
-        optionalSection.optional[statisticSection][currentDate] = {
-          rightAnswers: rightAnswersFromGame,
-          wrongAnswers: wrongAnswersFromGame,
-          longestWinningStreak: longestWinningStreakFromGame
-        };
-      }
-      console.log('optionalSection', optionalSection);
-      return UsersStatisticAPI.#putUserStatistic(optionalSection);
+      optionalSection.optional[statisticSection][currentDate] = {
+        rightAnswers: rightAnswers + rightAnswersFromGame,
+        wrongAnswers: wrongAnswers + wrongAnswersFromGame,
+        longestWinningStreak: compareLongestWinningStreak,
+        amountNewWords: amountNewWords + amountNewWordsFromGame
+      };
+    } else {
+      optionalSection.optional[statisticSection][currentDate] = {
+        rightAnswers: rightAnswersFromGame,
+        wrongAnswers: wrongAnswersFromGame,
+        longestWinningStreak: longestWinningStreakFromGame,
+        amountNewWords: amountNewWordsFromGame
+      };
     }
+    await UsersStatisticAPI.#putUserStatistic(optionalSection);
+    return UsersStatisticAPI.updateWordUserStatistic(
+      amountLearnedWordsFromGame,
+      rightAnswersFromGame,
+      wrongAnswersFromGame,
+      amountNewWordsFromGame
+    );
+  }
+
+  static async updateWordUserStatistic(
+    amountLearnedWordsFromGame,
+    rightAnswersFromGame = 0,
+    wrongAnswersFromGame = 0,
+    amountNewWordsFromGame = 0
+  ) {
+    if (!amountLearnedWordsFromGame) return console.error('amountLearnedWordsFromGame not set');
+
+    const allContent = await UsersStatisticAPI.getUserStatistic();
+    const optionalSection = {
+      optional: allContent.optional
+    };
+
+    const currentDate = getCurrentDate();
+
+    if (optionalSection.optional.words[currentDate]) {
+      const { amountLearnedWords, rightAnswers, wrongAnswers, amountNewWords } =
+        optionalSection.optional.words[currentDate];
+
+      optionalSection.optional.words[currentDate] = {
+        rightAnswers: rightAnswers + rightAnswersFromGame,
+        wrongAnswers: wrongAnswers + wrongAnswersFromGame,
+        amountLearnedWords: amountLearnedWords + amountLearnedWordsFromGame,
+        amountNewWords: amountNewWords + amountNewWordsFromGame
+      };
+    } else {
+      optionalSection.optional.words[currentDate] = {
+        rightAnswers: rightAnswersFromGame,
+        wrongAnswers: wrongAnswersFromGame,
+        amountLearnedWords: amountLearnedWordsFromGame,
+        amountNewWords: amountNewWordsFromGame
+      };
+    }
+    return UsersStatisticAPI.#putUserStatistic(optionalSection);
   }
 }
 

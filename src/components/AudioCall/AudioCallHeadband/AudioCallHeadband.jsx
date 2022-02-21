@@ -3,13 +3,13 @@ import propTypes from 'prop-types';
 import { Button, Form } from 'react-bootstrap';
 import './AudioCallHeadband.scss';
 import { observer } from 'mobx-react-lite';
-import audioCall from '../../../store/audioCall';
+import audioCallStore from '../../../store/audioCallStore';
 
 const AudioCallHeadband = observer((props) => {
   const { setIsGameInProgress } = props;
 
   function changeGameLevel(e) {
-    audioCall.setGameLevel(e.target.value);
+    audioCallStore.setGameLevel(e.target.value);
   }
   function startGame() {
     setIsGameInProgress(true);
@@ -21,8 +21,8 @@ const AudioCallHeadband = observer((props) => {
       <p>Выберите правильный перевод услышанного слова.</p>
       <Form.Select
         className="select"
-        value={audioCall.gameLevel}
-        hidden={audioCall.gamePage}
+        value={audioCallStore.gameLevel}
+        hidden={audioCallStore.gamePage}
         onChange={(e) => changeGameLevel(e)}
       >
         <option value="0">1 уровень</option>
