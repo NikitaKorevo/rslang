@@ -170,6 +170,7 @@ export const getUserWord = async (wordId) => {
           } else if (response.status == 404) {
                 return false;
           }
+          return false;
     };
 
 export const changeStatusWord = async(wordId, newStatusWord) => {
