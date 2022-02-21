@@ -1,9 +1,24 @@
 import React from 'react';
 import { TimerSprint } from './TimerSprint';
+import { useCallback, useEffect } from 'react';
 import './styles/field-game-sprint.css';
 
 
 function FieldGameSprint (props) {
+    const handleKeyPress = useCallback((e) => {
+            if(e.key === 'ArrowLeft') {
+                callBackAnswer(true);
+            } else if (e.key === 'ArrowRight' ) {
+                callBackAnswer(false);
+            }
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyPress, false);
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress, false);
+        };
+    }, [handleKeyPress]);
    
     const {current, callBackAnswer, score, multiScore, callBackFinishTimer, overflowLength, answerFrom} = props;
     let numPicter = 1;
