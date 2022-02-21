@@ -113,13 +113,14 @@ class UsersStatisticAPI {
         amountNewWords: amountNewWordsFromGame
       };
     }
-    await UsersStatisticAPI.#putUserStatistic(optionalSection);
-    return UsersStatisticAPI.updateWordUserStatistic(
+    await UsersStatisticAPI.#putUserStatistic(optionalSection);  
+    const response = await UsersStatisticAPI.updateWordUserStatistic(
       amountLearnedWordsFromGame,
       rightAnswersFromGame,
       wrongAnswersFromGame,
       amountNewWordsFromGame
     );
+    return response;
   }
 
   static async updateWordUserStatistic(
@@ -128,8 +129,6 @@ class UsersStatisticAPI {
     wrongAnswersFromGame = 0,
     amountNewWordsFromGame = 0
   ) {
-    if (!amountLearnedWordsFromGame) return console.error('amountLearnedWordsFromGame not set');
-
     const allContent = await UsersStatisticAPI.getUserStatistic();
     const optionalSection = {
       optional: allContent.optional
@@ -155,7 +154,8 @@ class UsersStatisticAPI {
         amountNewWords: amountNewWordsFromGame
       };
     }
-    return UsersStatisticAPI.#putUserStatistic(optionalSection);
+    const response = await UsersStatisticAPI.#putUserStatistic(optionalSection);
+    return response;
   }
 }
 
