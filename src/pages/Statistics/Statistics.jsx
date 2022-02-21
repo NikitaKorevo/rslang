@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
-import UsersStatisticAPI from '../../API/usersStatisticAPI';
+import usersStatisticAPI from '../../API/usersStatisticAPI';
 import { getCurrentDate } from '../../utils/utils';
 import './Statistics.scss';
 import { getUserWords, getUserWord } from '../../API/progress';
@@ -16,32 +16,35 @@ function Statistics() {
     async function getUserStatistic() {
       const date = getCurrentDate();
       setCurrentDate(date);
-      const userStatistics = await UsersStatisticAPI.getUserStatistic();
+      const userStatistics = await usersStatisticAPI.getUserStatistic();
 
       const dataAudioCallStatistics = userStatistics.optional.audioCall[date];
       if (dataAudioCallStatistics) {
-        const percentageCorrectAnswersAudioCall =
+        const percentageCorrectAnswersAudioCall = Math.ceil(
           (dataAudioCallStatistics.rightAnswers /
             (dataAudioCallStatistics.rightAnswers + dataAudioCallStatistics.wrongAnswers)) *
-          100;
+            100
+        );
         setAudioCallStatistics({ ...dataAudioCallStatistics, percentageCorrectAnswersAudioCall });
       }
 
       const dataSprintStatistics = userStatistics.optional.sprint[date];
       if (dataSprintStatistics) {
-        const percentageCorrectAnswersSprint =
+        const percentageCorrectAnswersSprint = Math.ceil(
           (dataSprintStatistics.rightAnswers /
             (dataSprintStatistics.rightAnswers + dataSprintStatistics.wrongAnswers)) *
-          100;
+            100
+        );
         setSprintStatistics({ ...dataSprintStatistics, percentageCorrectAnswersSprint });
       }
 
       const dataWordStatistics = userStatistics.optional.words[date];
       if (dataWordStatistics) {
-        const percentageCorrectAnswersWords =
+        const percentageCorrectAnswersWords = Math.ceil(
           (dataWordStatistics.rightAnswers /
             (dataWordStatistics.rightAnswers + dataWordStatistics.wrongAnswers)) *
-          100;
+            100
+        );
         setWordStatistics({ ...dataWordStatistics, percentageCorrectAnswersWords });
       }
 
@@ -51,11 +54,15 @@ function Statistics() {
   }, []);
 
   async function getUserStatistic() {
-    console.log(await UsersStatisticAPI.getUserStatistic());
+    console.log(await usersStatisticAPI.getUserStatistic());
   }
 
   async function getUserWords2() {
     console.log(await getUserWords());
+  }
+
+  async function updateWordUserStatistic() {
+    await usersStatisticAPI.updateWordUserStatistic(1);
   }
 
   return (
@@ -65,6 +72,9 @@ function Statistics() {
       </button>
       <button type="button" onClick={() => getUserWords2()}>
         getUserWords
+      </button>
+      <button type="button" onClick={() => updateWordUserStatistic()}>
+        updateWordUserStatistic
       </button>
 
       <h2 className="Statistics__title">Статистика ({currentDate})</h2>

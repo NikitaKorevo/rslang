@@ -6,8 +6,9 @@ import { getRandomNumber, shuffleArray } from '../../../utils/utils';
 import CONSTANTS from '../../../constants/constants';
 import audioCallStore from '../../../store/audioCallStore';
 import AudioCallResult from '../AudioCallResult/AudioCallResult';
-import UsersStatisticAPI from '../../../API/usersStatisticAPI';
+import usersStatisticAPI from '../../../API/usersStatisticAPI';
 import { toCalcProgressWord } from '../../../API/progress';
+import usersAggregatedWords from '../../../API/usersAggregatedWords';
 
 const AudioCallProgress = observer(() => {
   const amountPages = 30;
@@ -16,6 +17,8 @@ const AudioCallProgress = observer(() => {
   const [isQuestion, setIsQuestion] = useState(false);
   const [words, setWords] = useState([]);
   const [mixedWords, setMixedWords] = useState([]);
+  const [amountNewWordsBeforeGame, setAmountNewWordsBeforeGame] = useState(null);
+  const [amountLearnedWordsBeforeGame, setAmountLearnedWordsBeforeGame] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [currentPressedButton, setCurrentPressedButton] = useState(null);
   const [positionRightAnswer, setPositionRightAnswer] = useState(null);
@@ -67,6 +70,9 @@ const AudioCallProgress = observer(() => {
 
       setMixedWords(shuffleData);
       setIsQuestion(true);
+
+      setAmountNewWordsBeforeGame(await usersAggregatedWords.getAmountNewWords());
+      setAmountLearnedWordsBeforeGame(await usersAggregatedWords.getAmountLearnedWords());
     }
     getWords();
   }, []);
@@ -92,7 +98,6 @@ const AudioCallProgress = observer(() => {
     if (!isQuestion) return;
     setIsQuestion(false);
     const buttonStatusCopy = [...buttonStatus];
-    console.log(currentQuestion.id);
 
     if (positionRightAnswer === buttonNumber) {
       buttonStatusCopy[buttonNumber] = 'success';
@@ -102,8 +107,7 @@ const AudioCallProgress = observer(() => {
         setLongestWinningStreak(winningStreak);
       }
       setWinningStreak(winningStreak + 1);
-      /* console.log(currentQuestion); */
-      console.log(await toCalcProgressWord(audioCallStore.gameLevel, currentQuestion.id, true));
+      toCalcProgressWord(currentQuestion.group.toString(), currentQuestion.id.toString(), true);
     } else {
       if (buttonNumber !== null) buttonStatusCopy[buttonNumber] = 'danger';
       setWrongChoice([...wrongChoice, currentQuestion]);
@@ -113,29 +117,30 @@ const AudioCallProgress = observer(() => {
         setLongestWinningStreak(winningStreak);
       }
       setWinningStreak(0);
-      console.log(await toCalcProgressWord('hard', currentQuestion.id, false));
+      toCalcProgressWord('hard', currentQuestion.id.toString(), false);
     }
     setButtonStatus(buttonStatusCopy);
     setCurrentPressedButton(buttonNumber);
   }
 
-  function showResult() {
-    console.log('rightChoice', rightChoice);
-    console.log('wrongChoice', wrongChoice);
-    console.log('longestWinningStreak', longestWinningStreak);
-    console.log('winningStreak', winningStreak);
-
+  async function showResult() {
+    setIsGameFinished(true);
     const amountRightChoice = rightChoice.length;
     const amountWrongChoice = wrongChoice.length;
-    UsersStatisticAPI.updateUserStatistic(
+
+    const amountNewWordsAfterGame = await usersAggregatedWords.getAmountNewWords();
+    const amountLearnedWordsAfterGame = await usersAggregatedWords.getAmountLearnedWords();
+    const differenceAmountNewWords = amountNewWordsAfterGame - amountNewWordsBeforeGame;
+    const differenceLearnedWords = amountLearnedWordsAfterGame - amountLearnedWordsBeforeGame;
+
+    await usersStatisticAPI.updateUserStatistic(
       'audioCall',
       amountRightChoice,
       amountWrongChoice,
       longestWinningStreak,
-      5,
-      2
+      differenceAmountNewWords,
+      differenceLearnedWords
     );
-    setIsGameFinished(true);
   }
 
   function skipExercise() {

@@ -4,7 +4,8 @@ const CONSTANTS = {
     users: 'users',
     signIn: 'signin',
     words: 'words',
-    statistics: 'statistics'
+    statistics: 'statistics',
+    aggregatedWords: 'aggregatedWords'
   },
   textBookPagesAmount: 29,
   firstTextBookPage: 0,
@@ -14,7 +15,7 @@ const CONSTANTS = {
     learned: 'learned'
   },
   word: {
-    difficulty: "1",
+    difficulty: '1',
     optional: {
       progress: {
         totalGames: 0,

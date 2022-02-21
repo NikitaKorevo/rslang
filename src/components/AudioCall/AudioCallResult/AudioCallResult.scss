@@ -1,5 +1,8 @@
 .AudioCallResult {
-  .subtitle {
+  &__word {
+    padding-bottom: 2px;
+  }
+  &__subtitle {
     display: inline-block;
   }
 }

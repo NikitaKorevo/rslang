@@ -16,20 +16,20 @@ function AudioCallResult(props) {
   }
 
   const rightChoiceElement = rightChoice.map((answer) => (
-    <div key={answer.word}>
-      <button onClick={() => playAudio(answer.audio)} type="button">
+    <div className="AudioCallResult__word" key={answer.word}>
+      <Button onClick={() => playAudio(answer.audio)} type="button">
         послушать
-      </button>
+      </Button>
       <span> {answer.word}</span>
       <span> — {answer.wordTranslate}</span>
     </div>
   ));
 
   const wrongChoiceElement = wrongChoice.map((answer) => (
-    <div key={answer.word}>
-      <button onClick={() => playAudio(answer.audio)} type="button">
+    <div className="AudioCallResult__word" key={answer.word}>
+      <Button onClick={() => playAudio(answer.audio)} type="button">
         послушать
-      </button>
+      </Button>
       <span> {answer.word}</span>
       <span> — {answer.wordTranslate}</span>
     </div>
@@ -52,11 +52,11 @@ function AudioCallResult(props) {
         <Modal.Title id="contained-modal-title-vcenter">Результат</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h5 className="subtitle">Ошибок</h5>
+        <h5 className="AudioCallResult__subtitle">Ошибок</h5>
         <span> {wrongChoice.length}</span>
         {wrongChoiceElement}
 
-        <h5 className="subtitle">Знаю</h5>
+        <h5 className="AudioCallResult__subtitle">Знаю</h5>
         <span> {rightChoice.length}</span>
         {rightChoiceElement}
       </Modal.Body>
