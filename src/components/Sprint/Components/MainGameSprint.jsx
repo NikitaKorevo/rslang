@@ -1,8 +1,9 @@
 import React from 'react';
 import {FieldGameSprint} from './FieldGameSprint';
 import {StatisticGameSprint} from './StatisticGameSprint';
-import {toCalcProgressWord} from '../../../API/progress';
+import {toCalcProgressWord, isUserWord, getUserWord} from '../../../API/progress';
 import './styles/field-game-sprint.css';
+import UsersStatisticAPI from '../../../API/usersStatisticAPI';
 
 class MainGameSprint extends React.Component {
     state = {
@@ -28,6 +29,9 @@ class MainGameSprint extends React.Component {
         answerFrom: '',
         isAuth: false,
         group: 0,
+        numberNewWords: 0,
+        numberLearnedWords: 0,
+        maxNumberCorrect: 0,  
     }
 
     shuffle(array) {
@@ -37,6 +41,17 @@ class MainGameSprint extends React.Component {
         }
         return array;
       }
+    callbackSendStatistic = async() => {
+        if(this.state.isAuth) {
+            if (this.state.maxNumberCorrect >= this.state.numberCorrect) {
+                await UsersStatisticAPI.updateUserStatistic('sprint', this.state.correctWords.length, this.state.incorrectWords.length,
+                this.state.maxNumberCorrect, this.state.numberNewWords, this.state.numberLearnedWords);
+            } else if (this.state.maxNumberCorrect < this.state.numberCorrect) {
+                await UsersStatisticAPI.updateUserStatistic('sprint', this.state.correctWords.length, this.state.incorrectWords.length,
+                this.state.numberCorrect, this.state.numberNewWords, this.state.numberLearnedWords);
+            }
+        }
+    }
 
     isCorrectCurrentTranslate = (current) => {
         const indexCurrent = this.state.words.findIndex(word => (word.word === current.currentWord));
@@ -106,13 +121,37 @@ class MainGameSprint extends React.Component {
             }
         });
         if(this.state.isAuth) {
-           await toCalcProgressWord(this.state.group + '', this.state.words[this.state.currentCount].id, true);   
+           const isWord = await isUserWord(this.state.words[this.state.currentCount].id);
+           if(isWord != -1) {
+               if(!isWord) {
+                   console.log(isWord,'isWord');
+                    const toCalc = await toCalcProgressWord(this.state.group + '', this.state.words[this.state.currentCount].id, true);
+                    console.log(toCalc, 'toCalc');
+                     if(toCalc) {
+                        this.setState({numberNewWords: this.state.numberNewWords + 1});
+                    }
+               } else {
+                    const toCalc = await toCalcProgressWord(this.state.group + '', this.state.words[this.state.currentCount].id, true);
+                    if(toCalc) {
+                        const data = await getUserWord(this.state.words[this.state.currentCount].id);
+                        if(data) {
+                            if(data.optional.status === 'learned') {
+                                this.setState({numberLearnedWords: this.state.numberLearnedWords + 1})
+                            }
+                        }
+                    }
+               }
+           } 
+        //    await toCalcProgressWord(this.state.group + '', this.state.words[this.state.currentCount].id, true);   
         }
         this.saveCorrectAnswer();
         this.changeCurrent();
 
        } else {
            this.saveIncorrectAnswer();
+           if (this.state.numberCorrect > this.state.maxNumberCorrect) {
+               this.setState({maxNumberCorrect: this.state.numberCorrect});
+           }
            this.setState({numberCorrect: 0}, () => {
                 this.setState({multiScore: 10});
             });
@@ -122,8 +161,18 @@ class MainGameSprint extends React.Component {
                 this.setState({answerFrom: 'norightAnswer'});
             }
             if(this.state.isAuth) {
-                await toCalcProgressWord(this.state.group + '', this.state.words[this.state.currentCount].id, false);   
-             }            
+                const isWord = await isUserWord(this.state.words[this.state.currentCount].id);
+                if(isWord != -1) {
+                    if(!isWord) {
+                         const toCalc = await toCalcProgressWord(this.state.group + '', this.state.words[this.state.currentCount].id, true);
+                         if(toCalc) {
+                             this.setState({numberNewWords: this.state.numberNewWords + 1});
+                         }
+                    } else {
+                        await toCalcProgressWord(this.state.group + '', this.state.words[this.state.currentCount].id, false);
+                    }
+                }
+            }            
            this.changeCurrent();
        }
     }
@@ -132,7 +181,8 @@ class MainGameSprint extends React.Component {
         this.setState({finishTimer: true});
     }
 
-    callBackGameAgain = () => {
+    callBackGameAgain = async() => {
+        await this.callbackSendStatistic();
         this.init();
     }
 
@@ -145,7 +195,10 @@ class MainGameSprint extends React.Component {
             },
             currentCount: 0,
             overflowLength: false,
-            answerFrom: '',}, this.initShuffle);
+            answerFrom: '',
+            numberNewWords: 0,
+            numberLearnedWords: 0,
+            maxNumberCorrect: 0,  }, this.initShuffle);
     }
 
     initShuffle = () => {
@@ -207,9 +260,9 @@ class MainGameSprint extends React.Component {
     }
 
     render () {
-        const {loading, current, score, multiScore, finishTimer,
+        const { loading, current, score, multiScore, finishTimer,
                 correctWords, incorrectWords, overflowLength, answerFrom} = this.state;
-        
+
         return <div className="container-main-sprint">
             {
                 loading ? (<div className="loading-sprint">
@@ -217,8 +270,8 @@ class MainGameSprint extends React.Component {
                     </div>
                 </div>) :
                 (finishTimer || overflowLength) ? <StatisticGameSprint correctWords={correctWords} incorrectWords={incorrectWords}
-                    callBackGameAgain={this.callBackGameAgain} /> :
-                <FieldGameSprint current={current} callBackAnswer ={this.callBackAnswer}
+                    callBackGameAgain={this.callBackGameAgain} callbackSendStatistic={this.callbackSendStatistic} /> :
+                <FieldGameSprint current={current} callBackAnswer={this.callBackAnswer} 
                  score={score} multiScore={multiScore} callBackFinishTimer={this.callBackFinishTimer}
                  answerFrom={answerFrom}/>
             }         

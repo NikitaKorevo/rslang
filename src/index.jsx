@@ -6,7 +6,6 @@ import './index.scss';
 import { HashRouter } from 'react-router-dom';
 import App from './App';
 import RootStore from './store/rootStore';
-import PropTypes from 'prop-types';
 
 const rootStore = new RootStore();
 

@@ -4,8 +4,10 @@ import { Button } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { getRandomNumber, shuffleArray } from '../../../utils/utils';
 import CONSTANTS from '../../../constants/constants';
-import audioCall from '../../../store/audioCall';
+import audioCallStore from '../../../store/audioCallStore';
 import AudioCallResult from '../AudioCallResult/AudioCallResult';
+import UsersStatisticAPI from '../../../API/usersStatisticAPI';
+import { toCalcProgressWord } from '../../../API/progress';
 
 const AudioCallProgress = observer(() => {
   const amountPages = 30;
@@ -19,6 +21,8 @@ const AudioCallProgress = observer(() => {
   const [positionRightAnswer, setPositionRightAnswer] = useState(null);
   const [rightChoice, setRightChoice] = useState([]);
   const [wrongChoice, setWrongChoice] = useState([]);
+  const [longestWinningStreak, setLongestWinningStreak] = useState(0);
+  const [winningStreak, setWinningStreak] = useState(0);
   const [randomButtonValues, setRandomButtonValues] = useState([]);
   const [buttonStatus, setButtonStatus] = useState([
     'primary',
@@ -30,16 +34,16 @@ const AudioCallProgress = observer(() => {
 
   useEffect(() => {
     async function getWords() {
-      const gamePage = audioCall.gamePage
-        ? audioCall.gamePage
+      const gamePage = audioCallStore.gamePage
+        ? audioCallStore.gamePage
         : getRandomNumber(0, amountPages - 1).toString();
 
       // TODO: delete console.log
       console.log('gamePage', gamePage);
-      console.log('audioCall.gameLevel', audioCall.gameLevel);
+      console.log('audioCallStore.gameLevel', audioCallStore.gameLevel);
 
       const response = await fetch(
-        `${CONSTANTS.baseUrl}words?page=${gamePage}&group=${audioCall.gameLevel}`
+        `${CONSTANTS.baseUrl}words?page=${gamePage}&group=${audioCallStore.gameLevel}`
       );
       const data = await response.json();
       setWords(data);
@@ -84,24 +88,53 @@ const AudioCallProgress = observer(() => {
     audio.play();
   }
 
-  function handlerAnswerButton(buttonNumber) {
+  async function handlerAnswerButton(buttonNumber) {
     if (!isQuestion) return;
     setIsQuestion(false);
     const buttonStatusCopy = [...buttonStatus];
+    console.log(currentQuestion.id);
 
     if (positionRightAnswer === buttonNumber) {
       buttonStatusCopy[buttonNumber] = 'success';
       setRightChoice([...rightChoice, currentQuestion]);
+
+      if (longestWinningStreak < winningStreak) {
+        setLongestWinningStreak(winningStreak);
+      }
+      setWinningStreak(winningStreak + 1);
+      /* console.log(currentQuestion); */
+      console.log(await toCalcProgressWord(audioCallStore.gameLevel, currentQuestion.id, true));
     } else {
       if (buttonNumber !== null) buttonStatusCopy[buttonNumber] = 'danger';
       setWrongChoice([...wrongChoice, currentQuestion]);
       buttonStatusCopy[positionRightAnswer] = 'success';
+
+      if (longestWinningStreak < winningStreak) {
+        setLongestWinningStreak(winningStreak);
+      }
+      setWinningStreak(0);
+      console.log(await toCalcProgressWord('hard', currentQuestion.id, false));
     }
     setButtonStatus(buttonStatusCopy);
     setCurrentPressedButton(buttonNumber);
   }
 
   function showResult() {
+    console.log('rightChoice', rightChoice);
+    console.log('wrongChoice', wrongChoice);
+    console.log('longestWinningStreak', longestWinningStreak);
+    console.log('winningStreak', winningStreak);
+
+    const amountRightChoice = rightChoice.length;
+    const amountWrongChoice = wrongChoice.length;
+    UsersStatisticAPI.updateUserStatistic(
+      'audioCall',
+      amountRightChoice,
+      amountWrongChoice,
+      longestWinningStreak,
+      5,
+      2
+    );
     setIsGameFinished(true);
   }
 

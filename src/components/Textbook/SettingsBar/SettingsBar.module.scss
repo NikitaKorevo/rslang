@@ -9,6 +9,14 @@
   }
 }
 
+a {
+  color: black;
+  text-decoration: none;
+  &:hover {
+    color: black;
+  }
+}
+
 .menuItem {
   margin-left: 10px;
 }
