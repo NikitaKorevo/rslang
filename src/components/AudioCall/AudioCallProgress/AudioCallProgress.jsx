@@ -98,6 +98,7 @@ const AudioCallProgress = observer(() => {
     if (!isQuestion) return;
     setIsQuestion(false);
     const buttonStatusCopy = [...buttonStatus];
+    console.log(currentQuestion.id);
 
     if (positionRightAnswer === buttonNumber) {
       buttonStatusCopy[buttonNumber] = 'success';
