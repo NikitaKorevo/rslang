@@ -1,10 +1,20 @@
 import AuthStore from '../store/authStore';
 const baseUrl = 'https://rslang-react-app.herokuapp.com';
+let userInfo;
+let userId, token, refreshToken;
 
-let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-let {userId, token, refreshToken} = userInfo;
+if(localStorage.getItem('userInfo')) {
+       userInfo = JSON.parse(localStorage.getItem('userInfo'));
+       ({userId, token, refreshToken} = userInfo);
+}
 
 export const createUserWord = async (wordId, word) => {
+      if(localStorage.getItem('userInfo')) {
+            userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            ({userId, token, refreshToken} = userInfo);
+     } else {
+           return false;
+     }
     let response = await fetch(`${baseUrl}/users/${userId}/words/${wordId}`, {
         method: 'POST',
         withCredentials: true,
@@ -37,6 +47,14 @@ export const createUserWord = async (wordId, word) => {
 }
 
 export const updateUserWord = async (wordId, word) => {
+
+      if(localStorage.getItem('userInfo')) {
+            userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            ({userId, token, refreshToken} = userInfo);
+     } else {
+           return false;
+     }
+
       let response = await fetch(`${baseUrl}/users/${userId}/words/${wordId}`, {
           method: 'PUT',
           withCredentials: true,
@@ -71,6 +89,13 @@ export const updateUserWord = async (wordId, word) => {
 
 export const getUserWords = async () => {
 
+      if(localStorage.getItem('userInfo')) {
+            userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            ({userId, token, refreshToken} = userInfo);
+     } else {
+           return false;
+     }
+
   let response = await fetch(`${baseUrl}/users/${userId}/words`, {
         method: 'GET',
         withCredentials: true,
@@ -101,6 +126,14 @@ export const getUserWords = async () => {
 };
 
 export const isUserWord = async (wordId) => {
+
+      if(localStorage.getItem('userInfo')) {
+            userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            ({userId, token, refreshToken} = userInfo);
+     } else {
+           return false;
+     }
+
       let res = false;
       let response;
             response = await fetch(`${baseUrl}/users/${userId}/words/${wordId}`, {
@@ -143,6 +176,14 @@ export const isUserWord = async (wordId) => {
 // };
 
 export const getUserWord = async (wordId) => {
+
+      if(localStorage.getItem('userInfo')) {
+            userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            ({userId, token, refreshToken} = userInfo);
+     } else {
+           return false;
+     }
+
       let response = await fetch(`${baseUrl}/users/${userId}/words/${wordId}`, {
             method: 'GET',
             withCredentials: true,
@@ -174,6 +215,14 @@ export const getUserWord = async (wordId) => {
     };
 
 export const changeStatusWord = async(wordId, newStatusWord) => {
+
+      if(localStorage.getItem('userInfo')) {
+            userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            ({userId, token, refreshToken} = userInfo);
+     } else {
+           return false;
+     }
+
       const word = {};
       const isSuchWord = await isUserWord(wordId);
       if (isSuchWord === true) {
@@ -195,6 +244,14 @@ return false;
 }
 
 export const changeDifficultyWord = async(wordId, newDifficultyWord) => {
+
+      if(localStorage.getItem('userInfo')) {
+            userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            ({userId, token, refreshToken} = userInfo);
+     } else {
+           return false;
+     }
+
       const word = {};
       const isSuchWord = await isUserWord(wordId);
       if (isSuchWord === true) {
@@ -210,6 +267,14 @@ return false;
 }
 
 export const toCalcProgressWord = async(difficulty, wordId, rightAnswer) => {
+
+      if(localStorage.getItem('userInfo')) {
+            userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            ({userId, token, refreshToken} = userInfo);
+     } else {
+           return false;
+     }
+     
       let resStatus = false;
       const word = {};
       const isSuchWord = await isUserWord(wordId);

@@ -74,6 +74,7 @@ class MainGameSprint extends React.Component {
     } 
 
     changeCurrent = () => {
+
         this.setState({currentCount: this.state.currentCount + 1}, () => {
             if(this.state.currentCount >= this.state.words.length) {
                 this.setState({countPages: this.state.countPages - 1}, async() => {
