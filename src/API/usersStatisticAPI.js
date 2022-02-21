@@ -113,7 +113,7 @@ class UsersStatisticAPI {
         amountNewWords: amountNewWordsFromGame
       };
     }
-    await UsersStatisticAPI.#putUserStatistic(optionalSection);
+    await UsersStatisticAPI.#putUserStatistic(optionalSection);  
     const response = await UsersStatisticAPI.updateWordUserStatistic(
       amountLearnedWordsFromGame,
       rightAnswersFromGame,

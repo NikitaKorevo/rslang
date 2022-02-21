@@ -5,7 +5,8 @@ import { NavLink } from 'react-router-dom';
 import ROUTES from '../../../constants/routes';
 
 function StatisticGameSprint (props) {
-    const {correctWords, incorrectWords,callBackGameAgain} = props;
+    const {correctWords, incorrectWords, callBackGameAgain, callbackSendStatistic} = props;
+
     return   <div className ='field-statistic-sprint'>
         <h3>Correct words:</h3>
         {correctWords.map ((item) => {
@@ -18,7 +19,7 @@ function StatisticGameSprint (props) {
         <div className="buttons-statistic-sprint">
             <button className="game-again-sprint" onClick={() => {callBackGameAgain()}}>&#8634;</button>
             {/* <button className="game-exit-sprint">&#10149;</button> */}
-            <NavLink className="game-exit-sprint" to={ROUTES.HOME}>&#10149;</NavLink>
+            <NavLink onClick={() => {callbackSendStatistic()}} className="game-exit-sprint" to={ROUTES.HOME}>&#10149;</NavLink>
         </div>   
     </div>
 }
