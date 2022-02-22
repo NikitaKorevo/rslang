@@ -118,7 +118,7 @@ const AudioCallProgress = observer(() => {
         setLongestWinningStreak(winningStreak);
       }
       setWinningStreak(0);
-      toCalcProgressWord('hard', currentQuestion.id.toString(), false);
+      toCalcProgressWord(currentQuestion.group.toString(), currentQuestion.id.toString(), false);
     }
     setButtonStatus(buttonStatusCopy);
     setCurrentPressedButton(buttonNumber);
