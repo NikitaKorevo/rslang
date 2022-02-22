@@ -91,6 +91,12 @@ const Textbook = () => {
       localStorage.setItem('textbookGroup', '0');
     }
 
+    const page = Number(localStorage.getItem('currentPage'));
+    const group = Number(localStorage.getItem('textbookGroup'));
+
+    rootStore.textbookStore.setTextbookGroup(group);
+    rootStore.textbookStore.setTextbookPage(page);
+
     await setUserWordsList();
 
     Number(localStorage.getItem('textbookGroup')) === 6 ? await loadHardWords() : await loadWords();

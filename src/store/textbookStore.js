@@ -27,6 +27,10 @@ class TextbookStore {
     localStorage.setItem('textbookGroup', this.textbookGroup);
   }
 
+  setTextbookPage(num) {
+    this.currentTextbookPage = num;
+  }
+
   setNextPage() {
     if (this.currentTextbookPage < CONSTANTS.textBookPagesAmount) this.currentTextbookPage += 1;
     localStorage.setItem('currentPage', this.currentTextbookPage);
