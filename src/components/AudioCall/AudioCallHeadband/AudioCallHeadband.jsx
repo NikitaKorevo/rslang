@@ -22,7 +22,7 @@ const AudioCallHeadband = observer((props) => {
       <Form.Select
         className="select"
         value={audioCallStore.gameLevel}
-        hidden={audioCallStore.gamePage}
+        hidden={!(audioCallStore.gamePage === null)}
         onChange={(e) => changeGameLevel(e)}
       >
         <option value="0">1 уровень</option>

@@ -4,6 +4,7 @@ import { Button, Dropdown, Form } from 'react-bootstrap';
 import React, { useContext } from 'react';
 import s from './SettingsBar.module.scss';
 import { Context } from '../../../index';
+import audioCallStore from '../../../store/audioCallStore';
 import ROUTES from '../../../constants/routes';
 
 const SettingsBar = observer(({ loadWords, loadHardWords, setUserWordsList }) => {
@@ -33,6 +34,11 @@ const SettingsBar = observer(({ loadWords, loadHardWords, setUserWordsList }) =>
       default:
         return 'A1';
     }
+  };
+
+  const changeAudioCallStore = () => {
+    audioCallStore.setGameLevel(rootStore.textbookStore.textbookGroup);
+    audioCallStore.setGamePage(rootStore.textbookStore.currentTextbookPage);
   };
 
   return (
@@ -95,7 +101,7 @@ const SettingsBar = observer(({ loadWords, loadHardWords, setUserWordsList }) =>
           ) : null}
         </Dropdown.Menu>
       </Dropdown>
-      <Button variant="warning" className={s.menuItem}>
+      <Button variant="warning" className={s.menuItem} onClick={() => changeAudioCallStore()}>
         <NavLink className="nav__link" to={ROUTES.AUDIO_CALL}>
           Аудиовызов
         </NavLink>
