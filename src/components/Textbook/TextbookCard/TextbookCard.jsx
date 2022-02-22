@@ -9,7 +9,6 @@ import { Tooltip } from '@mui/material';
 
 const TextbookCard = ({
   card,
-  pos,
   playAudio,
   isPlaying,
   setIsPlaying,
@@ -59,11 +58,10 @@ const TextbookCard = ({
           ? [s.card, s.hide].join(' ')
           : s.card
       }
-      key={pos}
+      key={card.id}
     >
-      <div className={s.imgWrapper}>
-        <div className={s.img} style={{ background: `url(${CONSTANTS.baseUrl}${card.image})` }} />
-      </div>
+      <div className={s.img} style={{ background: `url(${CONSTANTS.baseUrl}${card.image})` }} />
+
       <div className={s.cardTextContainer}>
         <div className={s.word}>{card.word}</div>
         <div className={s.transcript}>
@@ -100,7 +98,6 @@ const TextbookCard = ({
       <div className={s.cardIcons}>
         <Tooltip title="Воспроизвести предложение" placement="left">
           <div
-            title="Воспроизвести предложение"
             className={[s.playWordIcon, s.cardIcon].join(' ')}
             onClick={async () => {
               if (!isPlaying) {

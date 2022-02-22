@@ -48,7 +48,6 @@ const Textbook = () => {
       );
       updateWords(data.data);
       setLoadAnimation(false);
-      console.log(data.data);
     } catch (e) {
       setLoadAnimation(false);
     }
@@ -104,44 +103,42 @@ const Textbook = () => {
 
   return (
     <div className={s.textbook}>
-      <div className={s.container}>
-        {loadAnimation ? (
-          <div className={s.loadingIcon}>
-            <Spinner animation="grow" role="status" className={s.spinner}>
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
+      {loadAnimation ? (
+        <div className={s.loadingIcon}>
+          <Spinner animation="grow" role="status" className={s.spinner}>
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      ) : (
+        <div>
+          <SettingsBar
+            loadWords={loadWords}
+            loadHardWords={loadHardWords}
+            setUserWordsList={setUserWordsList}
+          />
+          <PaginationBar loadWords={loadWords} setUserWordsList={setUserWordsList} />
+          <div className={s.cards}>
+            {words.length === 0 ? (
+              <div>Сложных слов не обнаружено...</div>
+            ) : (
+              words.map((card) => (
+                <TextbookCard
+                  key={card.id}
+                  card={card}
+                  playAudio={playAudioHandler}
+                  isPlaying={isPlaying}
+                  setIsPlaying={setIsPlaying}
+                  hardWordsId={hardWordsId}
+                  learnedWordsId={learnedWordsId}
+                  setUserWordsList={setUserWordsList}
+                  loadHardWords={loadHardWords}
+                />
+              ))
+            )}
           </div>
-        ) : (
-          <div>
-            <SettingsBar
-              loadWords={loadWords}
-              loadHardWords={loadHardWords}
-              setUserWordsList={setUserWordsList}
-            />
-            <PaginationBar loadWords={loadWords} setUserWordsList={setUserWordsList} />
-            <div className={s.cards}>
-              {words.length === 0 ? (
-                <div>Сложных слов не обнаружено...</div>
-              ) : (
-                words.map((card, key) => (
-                  <TextbookCard
-                    card={card}
-                    pos={key}
-                    playAudio={playAudioHandler}
-                    isPlaying={isPlaying}
-                    setIsPlaying={setIsPlaying}
-                    hardWordsId={hardWordsId}
-                    learnedWordsId={learnedWordsId}
-                    setUserWordsList={setUserWordsList}
-                    loadHardWords={loadHardWords}
-                  />
-                ))
-              )}
-            </div>
-            <PaginationBar loadWords={loadWords} />
-          </div>
-        )}
-      </div>
+          <PaginationBar loadWords={loadWords} />
+        </div>
+      )}
     </div>
   );
 };
