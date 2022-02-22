@@ -72,7 +72,6 @@ const AudioCallProgress = observer(() => {
       setIsQuestion(true);
 
       setAmountNewWordsBeforeGame(await usersAggregatedWords.getAmountNewWords());
-      console.log(await usersAggregatedWords.getAmountNewWords());
       setAmountLearnedWordsBeforeGame(await usersAggregatedWords.getAmountLearnedWords());
     }
     getWords();
