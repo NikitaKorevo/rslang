@@ -6,7 +6,7 @@ class UsersAggregatedWords {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const { userId, token } = userInfo;
     const filter =
-      '{"$or":[{"userWord.optional.status":"new"}, {"userWord.optional.status":"learned"}]}';
+      '{"$or":[{"userWord.optional.status":"new"}, {"userWord.optional.status":"learned"}, {"userWord.optional.status":"hard"}]}';
 
     try {
       const response = await $api.get(

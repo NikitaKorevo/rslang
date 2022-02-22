@@ -72,6 +72,7 @@ const AudioCallProgress = observer(() => {
       setIsQuestion(true);
 
       setAmountNewWordsBeforeGame(await usersAggregatedWords.getAmountNewWords());
+      console.log(await usersAggregatedWords.getAmountNewWords());
       setAmountLearnedWordsBeforeGame(await usersAggregatedWords.getAmountLearnedWords());
     }
     getWords();
@@ -118,7 +119,7 @@ const AudioCallProgress = observer(() => {
         setLongestWinningStreak(winningStreak);
       }
       setWinningStreak(0);
-      toCalcProgressWord('hard', currentQuestion.id.toString(), false);
+      toCalcProgressWord(currentQuestion.group.toString(), currentQuestion.id.toString(), false);
     }
     setButtonStatus(buttonStatusCopy);
     setCurrentPressedButton(buttonNumber);
