@@ -13,7 +13,7 @@ class AudioCall {
   }
 
   setGamePage(page = null) {
-    this.gamePage = page ? page.toString() : null;
+    this.gamePage = page === null ? null : page.toString();
   }
 }
 

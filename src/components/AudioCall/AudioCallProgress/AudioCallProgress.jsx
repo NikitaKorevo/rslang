@@ -37,17 +37,19 @@ const AudioCallProgress = observer(() => {
 
   useEffect(() => {
     async function getWords() {
-      const gamePage = audioCallStore.gamePage
-        ? audioCallStore.gamePage
-        : getRandomNumber(0, amountPages - 1).toString();
+      const gamePage =
+        audioCallStore.gamePage !== null
+          ? audioCallStore.gamePage
+          : getRandomNumber(0, amountPages - 1).toString();
+
+      let { gameLevel } = audioCallStore;
+      if (gameLevel === '6') gameLevel = 5;
 
       // TODO: delete console.log
       console.log('gamePage', gamePage);
-      console.log('audioCallStore.gameLevel', audioCallStore.gameLevel);
+      console.log('gameLevel ', gameLevel);
 
-      const response = await fetch(
-        `${CONSTANTS.baseUrl}words?page=${gamePage}&group=${audioCallStore.gameLevel}`
-      );
+      const response = await fetch(`${CONSTANTS.baseUrl}words?page=${gamePage}&group=${gameLevel}`);
       const data = await response.json();
       setWords(data);
 
