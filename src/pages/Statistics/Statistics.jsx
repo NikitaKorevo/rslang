@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Spinner } from 'react-bootstrap';
+/* import { Spinner } from 'react-bootstrap'; */
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import usersStatisticAPI from '../../API/usersStatisticAPI';
 import { getCurrentDate } from '../../utils/utils';
 import './Statistics.scss';
 
 function Statistics() {
-  const [isContentLoading, setIsContentLoading] = useState(true);
+  /* const [isContentLoading, setIsContentLoading] = useState(true); */
   const [audioCallStatistics, setAudioCallStatistics] = useState(null);
   const [sprintStatistics, setSprintStatistics] = useState(null);
   const [wordStatistics, setWordStatistics] = useState(null);
@@ -52,7 +52,6 @@ function Statistics() {
         );
         setWordStatistics({ ...dataWordStatistics, percentageCorrectAnswersWords });
       }
-      setIsContentLoading(false);
 
       const gettingDataForLineChartNewWords = Object.keys(userStatistics.optional.words)
         .map((dateUserStatisticsWords) => {
