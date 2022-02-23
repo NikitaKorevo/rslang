@@ -15,7 +15,7 @@ export function shuffleArray(array) {
 export function getCurrentDate() {
   const date = new Date();
   const day = date.getDate();
-  const month = date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth();
+  const month = date.getMonth() < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
   const year = date.getFullYear();
   const formattedDate = `${day}.${month}.${year}`;
   return formattedDate;

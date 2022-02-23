@@ -1,7 +1,7 @@
 .Statistics {
   max-width: 1200px;
   width: calc(100% - 30px);
-  padding: 25px;
+  padding: 25px 0;
   margin: 0 auto;
 
   .Statistics__warning {
@@ -33,6 +33,25 @@
     }
 
     .game-statistics__item {
+    }
+  }
+
+  .Statistics__game-graphics-container {
+  }
+
+  .Statistics__game-graphics {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    align-items: center;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+
+    .game-graphics__subtitle {
+      margin-bottom: 10px;
     }
   }
 }

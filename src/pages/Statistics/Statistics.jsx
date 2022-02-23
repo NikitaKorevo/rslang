@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Spinner } from 'react-bootstrap';
+/* import { Spinner } from 'react-bootstrap'; */
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import usersStatisticAPI from '../../API/usersStatisticAPI';
 import { getCurrentDate } from '../../utils/utils';
 import './Statistics.scss';
-/* import { getUserWords, getUserWord } from '../../API/progress'; */
 
 function Statistics() {
-  const [isContentLoading, setIsContentLoading] = useState(true);
-  /*   const [isUserAuthorized, setIsUserAuthorized] = useState(false); */
+  /* const [isContentLoading, setIsContentLoading] = useState(true); */
   const [audioCallStatistics, setAudioCallStatistics] = useState(null);
   const [sprintStatistics, setSprintStatistics] = useState(null);
   const [wordStatistics, setWordStatistics] = useState(null);
+  const [dataForLineChartNewWords, setDataForLineChartNewWords] = useState([]);
+  const [dataForLineChartLearnedWords, setDataForLineChartLearnedWords] = useState([]);
   const [currentDate, setCurrentDate] = useState('');
 
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-  let isAuth = userInfo.isAuth || false;
-  console.log(isAuth);
+  const isAuth = userInfo.isAuth || false;
 
   useEffect(() => {
-    /* setIsUserAuthorized(isAuth); */
-
-    async function getUserStatistic() {
+    async function getUserStatistics() {
       const date = getCurrentDate();
       setCurrentDate(date);
       const userStatistics = await usersStatisticAPI.getUserStatistic();
@@ -55,22 +53,63 @@ function Statistics() {
         setWordStatistics({ ...dataWordStatistics, percentageCorrectAnswersWords });
       }
 
-      setIsContentLoading(false);
+      const gettingDataForLineChartNewWords = Object.keys(userStatistics.optional.words)
+        .map((dateUserStatisticsWords) => {
+          if (dateUserStatisticsWords === 'null') return 'null';
+          return {
+            date: dateUserStatisticsWords,
+            amountNewWords: userStatistics.optional.words[dateUserStatisticsWords].amountNewWords
+          };
+        })
+        .filter((el) => el !== 'null');
+      setDataForLineChartNewWords(gettingDataForLineChartNewWords);
+
+      let countLearnedWords = 0;
+      const gettingDataForLineChartLearnedWords = Object.keys(userStatistics.optional.words)
+        .map((dateUserStatisticsWords) => {
+          if (dateUserStatisticsWords === 'null') return 'null';
+          countLearnedWords +=
+            userStatistics.optional.words[dateUserStatisticsWords].amountLearnedWords;
+          return {
+            date: dateUserStatisticsWords,
+            amountLearnedWords: countLearnedWords
+          };
+        })
+        .filter((el) => el !== 'null');
+      setDataForLineChartLearnedWords(gettingDataForLineChartLearnedWords);
     }
-    getUserStatistic();
+    getUserStatistics();
   }, []);
 
-  /*   async function getUserStatistic() {
-    console.log(await usersStatisticAPI.getUserStatistic());
-  }
+  const lineChartNewWords = (
+    <LineChart
+      width={700}
+      height={300}
+      data={dataForLineChartNewWords}
+      margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+    >
+      <Line type="monotone" dataKey="amountNewWords" stroke="#02a7a7" />
+      <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+      <XAxis dataKey="date" />
+      <YAxis />
+      <Tooltip />
+    </LineChart>
+  );
 
-  async function getUserWords2() {
-    console.log(await getUserWords());
-  }
-
-  async function updateWordUserStatistic() {
-    await usersStatisticAPI.updateWordUserStatistic(1);
-  } */
+  const lineChartLearnedWords = (
+    <LineChart
+      width={700}
+      height={300}
+      data={dataForLineChartLearnedWords}
+      margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+    >
+      <Line type="monotone" dataKey="amountLearnedWords" stroke="#02a7a7" />
+      <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+      <XAxis dataKey="date" />
+      <YAxis />
+      <Tooltip />
+    </LineChart>
+  );
 
   return (
     <>
@@ -81,16 +120,6 @@ function Statistics() {
       </div>
 
       <div hidden={!isAuth} className="Statistics">
-        {/* <button type="button" onClick={() => getUserStatistic()}>
-        get statistics in console
-      </button>
-      <button type="button" onClick={() => getUserWords2()}>
-        getUserWords
-      </button>
-      <button type="button" onClick={() => updateWordUserStatistic()}>
-        updateWordUserStatistic
-      </button> */}
-
         <h2 className="Statistics__title">Статистика ({currentDate})</h2>
         <div className="Statistics__game-statistics-container">
           <section className="Statistics__game-statistics">
@@ -138,6 +167,23 @@ function Statistics() {
               </li>
             </ul>
           </section>
+        </div>
+
+        <h2 className="Statistics__title">Графики</h2>
+        <div className="Statistics__game-graphics-container">
+          <div className="Statistics__game-graphics">
+            <span className="game-graphics__subtitle">
+              График, отображающий количество новых слов за каждый день изучения
+            </span>
+            {lineChartNewWords}
+          </div>
+
+          <div className="Statistics__game-graphics">
+            <span className="game-graphics__subtitle">
+              График, отображающий увеличение общего количества изученных слов по дням
+            </span>
+            {lineChartLearnedWords}
+          </div>
         </div>
       </div>
     </>
