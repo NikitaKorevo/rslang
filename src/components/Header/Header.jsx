@@ -7,9 +7,18 @@ import { Context } from '../../index';
 
 const Header = observer(() => {
   const { rootStore } = useContext(Context);
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const userName = userInfo.name;
   return (
     <header className="Header">
       <nav className="nav">
+        {rootStore.authStore.isAuth ? (
+          <div className="navUser">
+            <div className="avatar-logo" />
+            <div>{userName}</div>
+          </div>
+        ) : null}
+
         <ul className="nav__list">
           <li className="nav__item">
             <NavLink className="nav__link" to={ROUTES.HOME}>
