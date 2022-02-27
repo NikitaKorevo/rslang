@@ -1,0 +1,17 @@
+.pagination {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  a {
+    color:black;
+  }
+}
+
+.pageLink {
+  color:red;
+}
+
+.currentPage {
+  background-color: #eca237;
+  color:#eca237;
+}
